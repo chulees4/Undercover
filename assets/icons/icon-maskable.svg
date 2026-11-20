@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Undercover Maskable Icon">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#070914"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <g transform="translate(56, 56) scale(0.78)">
+    <path d="M136 226 C154 140, 198 118, 256 128 C314 118, 358 140, 376 226 Z" fill="url(#neon)"/>
+    <ellipse cx="256" cy="232" rx="164" ry="26" fill="url(#neon)"/>
+    <path d="M150 212 Q256 232 362 212" fill="none" stroke="url(#accent)" stroke-width="14" stroke-linecap="round"/>
+    <g fill="#070914" stroke="#67e8f9" stroke-width="10">
+      <rect x="144" y="274" width="94" height="58" rx="22"/>
+      <rect x="274" y="274" width="94" height="58" rx="22"/>
+      <line x1="238" y1="300" x2="274" y2="300" stroke-width="10"/>
+    </g>
+    <path d="M158 386 L256 426 L354 386 L326 352 L256 382 L186 352 Z" fill="url(#accent)" opacity="0.9"/>
+  </g>
+</svg>

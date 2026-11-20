@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Undercover – Gián Điệp Ẩn Danh: Board game suy luận xã hội Pass & Play 100% tiếng Việt, chơi offline cùng bạn bè." />
+  <meta name="theme-color" content="#070914" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Undercover" />
+
+  <title>Undercover – Gián Điệp Ẩn Danh</title>
+
+  <link rel="icon" type="image/svg+xml" href="./assets/icons/icon.svg" />
+  <link rel="apple-touch-icon" href="./assets/icons/icon.svg" />
+  <link rel="manifest" href="./manifest.json" />
+
+  <!-- Modular Stylesheets -->
+  <link rel="stylesheet" href="./src/css/tokens.css" />
+  <link rel="stylesheet" href="./src/css/layout.css" />
+  <link rel="stylesheet" href="./src/css/components.css" />
+  <link rel="stylesheet" href="./src/css/phases.css" />
+</head>
+<body>
+  <!-- Ambient Background -->
+  <div class="bg-ambient" aria-hidden="true"></div>
+
+  <!-- Confetti Canvas for Victory Celebration -->
+  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <div class="app-shell">
+    <!-- Top Header -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">🕵️</div>
+        <div class="brand-text">
+          <h1>UNDERCOVER</h1>
+          <span>Gián Điệp Ẩn Danh • Offline</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" id="btnHome" class="icon-btn hidden" title="Về màn hình thiết lập" aria-label="Về thiết lập">🏠</button>
+        <button type="button" id="btnSound" class="icon-btn active-sound" title="Bật/Tắt âm thanh" aria-label="Âm thanh">🔊</button>
+        <button type="button" id="btnRules" class="icon-btn" title="Luật chơi" aria-label="Luật chơi">❓</button>
+      </div>
+    </header>
+
+    <!-- Main Dynamic View Container -->
+    <main id="appView" class="app-main"></main>
+  </div>
+
+  <!-- Modal: Quick Rules -->
+  <div id="rulesModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="rulesModalTitle">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="rulesModalTitle">📖 Luật chơi Undercover</h3>
+        <button type="button" class="icon-btn" data-close-modal="rulesModal" aria-label="Đóng">✕</button>
+      </div>
+      <div class="rule-block">
+        <h4>🎭 1. Các vai trò chính</h4>
+        <ul>
+          <li><strong style="color:#67e8f9">Dân thường:</strong> Chiếm đa số, nhận cùng 1 từ khóa bí mật. Không biết mình thuộc phe nào.</li>
+          <li><strong style="color:#fdba74">Gián điệp:</strong> Nhận 1 từ khóa gần nghĩa với Dân thường. Cần trà trộn và sống sót.</li>
+          <li><strong style="color:#ddd6fe">Mũ Trắng (Mr. White):</strong> Không có từ khóa nào! Phải nghe người khác mô tả để "hùa" theo và đoán từ gốc.</li>
+        </ul>
+      </div>
+      <div class="rule-block">
+        <h4>🔄 2. Diễn biến mỗi vòng</h4>
+        <ul>
+          <li><strong>Phát từ:</strong> Chuyền tay 1 chiếc điện thoại, nhấn giữ thẻ để xem bí mật.</li>
+          <li><strong>Mô tả:</strong> Từng người dùng 1 từ/cụm ngắn để mô tả từ khóa của mình (không nhắc thẳng từ gốc). Vòng 1 Mũ Trắng không bao giờ nói đầu.</li>
+          <li><strong>Bỏ phiếu:</strong> Tranh luận xem ai lạc quẻ nhất và bỏ phiếu loại 1 người.</li>
+          <li><strong>Lật kèo Mũ Trắng:</strong> Khi bị loại, Mũ Trắng có <strong>20 giây</strong> đoán từ của Dân thường. Đoán đúng sẽ <strong>THẮNG NGAY!</strong></li>
+        </ul>
+      </div>
+      <div class="rule-block">
+        <h4>✨ 3. Vai trò mở rộng</h4>
+        <ul>
+          <li><strong>⚖️ Nữ thần Công lý:</strong> Thuộc phe Dân thường. Nếu bỏ phiếu kín bị hòa, người này quyết định loại ai.</li>
+          <li><strong>💘 Cặp đôi Người tình:</strong> 2 người ghép cặp. 1 người bị loại thì người kia lập tức bị loại theo.</li>
+          <li><strong>⚔️ Kẻ báo thù:</strong> Khi bị loại được kéo theo 1 người chơi bất kỳ.</li>
+        </ul>
+      </div>
+      <div class="rule-block">
+        <h4>🏆 4. Điều kiện thắng & Tính điểm</h4>
+        <ul>
+          <li><strong>Dân thường thắng (+2đ/người):</strong> Loại hết Gián điệp và Mũ Trắng.</li>
+          <li><strong>Phe Ẩn danh thắng:</strong> Sống sót đến khi chỉ còn ≤ 1 Dân thường. Gián điệp thắng 1 mình (+10đ), thắng chung phe (+6đ); Mũ Trắng sống sót (+6đ); Mũ Trắng đoán trúng từ (+8đ).</li>
+        </ul>
+      </div>
+      <button type="button" class="btn btn-primary mt-8" data-close-modal="rulesModal">Đã hiểu, chơi thôi!</button>
+    </div>
+  </div>
+
+  <!-- Modal: Custom Word Pack Manager -->
+  <div id="customWordsModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="customWordsTitle">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="customWordsTitle">✍️ Bộ từ khóa tự tạo</h3>
+        <button type="button" class="icon-btn" data-close-modal="customWordsModal" aria-label="Đóng">✕</button>
+      </div>
+      <div class="mb-12">
+        <label for="cwCiv" class="stepper-sub" style="display:block;margin-bottom:5px;">Từ Dân thường (Chính) *</label>
+        <input id="cwCiv" class="input-field mb-8" type="text" placeholder="VD: Bún đậu mắm tôm" maxlength="40" />
+
+        <label for="cwUnd" class="stepper-sub" style="display:block;margin-bottom:5px;">Từ Gián điệp (Gần nghĩa) *</label>
+        <input id="cwUnd" class="input-field mb-8" type="text" placeholder="VD: Bún chả Hà Nội" maxlength="40" />
+
+        <label for="cwSyn" class="stepper-sub" style="display:block;margin-bottom:5px;">Từ đồng nghĩa của Dân thường (cách nhau dấu phẩy)</label>
+        <input id="cwSyn" class="input-field mb-12" type="text" placeholder="VD: bún đậu, bun dau mam tom" maxlength="100" />
+
+        <button type="button" id="btnAddCustomWord" class="btn btn-primary">➕ Thêm cặp từ mới</button>
+      </div>
+      <div style="border-top:1px solid var(--border); padding-top:12px;">
+        <div class="card-title" style="margin-bottom:10px;">
+          <span>Danh sách đã lưu (<span id="cwCountModal">0</span>)</span>
+        </div>
+        <div id="cwListContainer" style="max-height:240px; overflow-y:auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Generic Dynamic Action Modal -->
+  <div id="dynamicModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div id="dynamicModalBox" class="modal-box"></div>
+  </div>
+
+  <!-- Helpful notice if opened directly via file:// -->
+  <script>
+    if (window.location.protocol === 'file:') {
+      document.addEventListener('DOMContentLoaded', function () {
+        var view = document.getElementById('appView');
+        if (view && !view.innerHTML.trim()) {
+          view.innerHTML =
+            '<section class="glass-card" style="text-align:center;padding:28px 20px;">' +
+            '<div style="font-size:44px;margin-bottom:10px;">🌐</div>' +
+            '<h2 style="margin:0 0 8px;">Cần chạy qua máy chủ web cục bộ</h2>' +
+            '<p class="muted">Dự án sử dụng ES Modules hiện đại nên trình duyệt chặn mở trực tiếp qua <code>file://</code>.</p>' +
+            '<p class="muted mt-12">Hãy nhấp đúp vào file <strong>start-game.bat</strong> (Windows) hoặc chạy <code>npm run dev</code> để chơi ngay!</p>' +
+            '</section>';
+        }
+      });
+    }
+  </script>
+
+  <!-- ES Module Entry Point -->
+  <script type="module" src="./src/js/main.js"></script>
+</body>
+</html>

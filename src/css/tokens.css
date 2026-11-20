@@ -1,0 +1,65 @@
+/* ==========================================================================
+   DESIGN TOKENS & BASE STYLES (100% OFFLINE - NO EXTERNAL CDN REQUIRED)
+   ========================================================================== */
+:root {
+  --bg-deep: #070914;
+  --bg-mid: #10132a;
+  --surface: rgba(20, 24, 48, 0.78);
+  --surface-solid: #161a36;
+  --surface-elevated: rgba(31, 37, 72, 0.85);
+  --border: rgba(255, 255, 255, 0.11);
+  --border-strong: rgba(255, 255, 255, 0.22);
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --neon-purple: #8b5cf6;
+  --neon-purple-glow: rgba(139, 92, 246, 0.45);
+  --neon-cyan: #06b6d4;
+  --neon-cyan-glow: rgba(6, 182, 212, 0.4);
+  --neon-orange: #f97316;
+  --neon-orange-glow: rgba(249, 115, 22, 0.4);
+  --neon-pink: #ec4899;
+  --neon-green: #10b981;
+  --neon-red: #ef4444;
+  --neon-amber: #f59e0b;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-full: 9999px;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --shadow-card: 0 14px 36px rgba(0, 0, 0, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Utility Helpers */
+.muted {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-12 { margin-bottom: 12px; }
+.hidden { display: none !important; }

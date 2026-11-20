@@ -1,0 +1,21 @@
+{
+  "name": "undercover-gian-diep-an-danh",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Undercover – Gián Điệp Ẩn Danh: Web game suy luận xã hội Pass & Play 100% tiếng Việt, hỗ trợ PWA offline.",
+  "scripts": {
+    "dev": "npx serve . -l 5173",
+    "preview": "npx serve . -l 4173",
+    "start:win": "powershell -ExecutionPolicy Bypass -File ./scripts/dev-server.ps1"
+  },
+  "keywords": [
+    "undercover",
+    "party-game",
+    "social-deduction",
+    "vietnamese",
+    "pwa",
+    "offline-game"
+  ],
+  "license": "MIT"
+}
