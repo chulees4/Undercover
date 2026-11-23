@@ -1,0 +1,18 @@
+.dialog {
+  color: var(--text, #f4f3ff);
+  margin: auto;
+  width: min(540px, calc(100vw - 28px));
+  max-height: calc(100dvh - 28px);
+}
+
+.dialog::backdrop {
+  background: rgb(5 6 16 / 75%);
+  backdrop-filter: blur(5px);
+}
+
+.playerButton {
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+}

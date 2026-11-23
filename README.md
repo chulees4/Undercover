@@ -1,77 +1,46 @@
 # 🕵️ Undercover – Gián Điệp Ẩn Danh
 
-Web game suy luận xã hội **Pass & Play** 100% tiếng Việt, hoạt động hoàn toàn **offline (PWA)** trên một thiết bị duy nhất — không cần cài thư viện hay CDN bên ngoài.
+Board game suy luận xã hội tiếng Việt cho **3–20 người** chuyền tay trên một thiết bị. Chơi với Dân thường, Gián điệp, Mũ Trắng và các vai mở rộng Công lý, Người tình, Báo thù. Hỗ trợ bỏ phiếu ngoài đời hoặc bỏ phiếu kín, bộ từ tiếng Việt, từ tự tạo, điểm tích lũy và tự lưu ván.
 
-## ✨ Tính năng nổi bật
+## Chạy và phát triển
 
-- **3 – 20 người chơi** với công thức tự động cân bằng vai trò (**Dân thường**, **Gián điệp**, **Mũ Trắng / Mr. White**).
-- **3 vai trò mở rộng**:
-  - ⚖️ **Nữ thần Công lý** (phá thế hòa phiếu kín).
-  - 💘 **Cặp đôi Người tình** (loại dây chuyền).
-  - ⚔️ **Kẻ báo thù** (kéo theo 1 người khi bị loại).
-- **65+ cặp từ tiếng Việt** chia theo 5 chủ đề (*Phổ thông, Ẩm thực VN, Địa danh & Du lịch, Phim & Giải trí, Công nghệ & Đời sống*) + **Bộ từ tự tạo** lưu cục bộ, tự động chống lặp từ.
-- **Chống nhìn trộm (Pass & Play)**: Màn hình chuyển máy riêng tư + thẻ **Nhấn giữ để xem từ**.
-- **2 chế độ bỏ phiếu**: Ngoài đời & Bỏ phiếu kín chuyền tay.
-- **Cơ hội lật kèo Mũ Trắng (20 giây)**: Chuẩn hóa tiếng Việt không dấu & khớp từ đồng nghĩa thông minh.
-- **Âm thanh Web Audio API tổng hợp** (0 file MP3), rung phản hồi (Haptics), pháo giấy Confetti, lưu tiến trình tự động (`localStorage`) và hỗ trợ cài đặt thành ứng dụng **PWA**.
+Cần Node.js 22.13+ trong dòng 22, Node.js 24 hoặc Node.js 26+.
 
-## 📁 Cấu trúc dự án
-
-```text
-.
-├── index.html                  # Trang chính & PWA meta
-├── manifest.json               # Web App Manifest (cài đặt PWA)
-├── sw.js                       # Service Worker cache offline
-├── package.json                # Cấu hình dự án & scripts
-├── start-game.bat              # Khởi chạy nhanh 1 click trên Windows
-├── scripts/
-│   └── dev-server.ps1          # Máy chủ web cục bộ (không cần Node/Python)
-├── assets/
-│   └── icons/
-│       ├── icon.svg            # Logo & Favicon SVG
-│       └── icon-maskable.svg   # Icon PWA maskable
-└── src/
-    ├── css/
-    │   ├── tokens.css          # Design tokens, màu sắc & reset
-    │   ├── layout.css          # Bố cục, nền neon & thanh điều hướng
-    │   ├── components.css      # Thẻ kính, nút, stepper, modal, toast
-    │   └── phases.css          # Giao diện từng giai đoạn chơi
-    ├── data/
-    │   ├── words.js            # Kho 65 cặp từ khóa tiếng Việt
-    │   └── avatars.js          # Danh sách avatar & nhãn vai trò
-    └── js/
-        ├── main.js             # Entry point, gắn sự kiện & đăng ký SW
-        ├── core/
-        │   ├── audio.js        # Web Audio synthesizer & haptics
-        │   ├── router.js       # Bộ điều hướng giai đoạn chơi
-        │   ├── state.js        # Trạng thái toàn cục & lưu phiên
-        │   ├── storage.js      # Helper localStorage an toàn
-        │   ├── utils.js        # Fisher-Yates, chuẩn hóa tiếng Việt
-        │   └── wordManager.js  # Chọn từ không lặp & quản lý từ tự tạo
-        ├── engine/
-        │   └── gameInit.js     # Khởi tạo ván chơi & chia vai trò
-        ├── phases/
-        │   ├── setup.js        # Giai đoạn 1: Thiết lập ván chơi
-        │   ├── distribute.js   # Giai đoạn 2: Phát từ bí mật
-        │   ├── describe.js     # Giai đoạn 3: Mô tả & đồng hồ đếm ngược
-        │   ├── voting.js       # Giai đoạn 4: Bỏ phiếu ngoài đời / kín
-        │   ├── elimination.js  # Giai đoạn 5: Lật vai, Mũ Trắng & chuỗi loại
-        │   └── endgame.js      # Giai đoạn 6: Tính điểm & bảng xếp hạng
-        └── ui/
-            ├── confetti.js     # Hiệu ứng pháo giấy Canvas
-            ├── customWordsModal.js # Modal quản lý bộ từ tự tạo
-            └── feedback.js     # Toast & Modal động
-```
-
-## 🚀 Cách chạy dự án
-
-### Cách 1: Windows 1-Click (Không cần cài đặt gì thêm)
-Nhấp đúp vào file **`start-game.bat`** — máy chủ cục bộ sẽ tự động mở game tại `http://localhost:5173`.
-
-### Cách 2: Dùng Node.js (nếu đã cài)
-```bash
+```sh
+npm ci
 npm run dev
 ```
 
-### Cách 3: Deploy lên Web (GitHub Pages / Vercel / Netlify)
-Dự án là static web chuẩn ES Modules, chỉ cần đẩy thư mục gốc lên **GitHub Pages**, **Vercel**, hoặc **Netlify** (không cần bước build).
+Trên Windows, chạy `start-game.bat` để cài phụ thuộc khi cần và mở game trên cổng 5173.
+
+| Lệnh                                      | Công dụng                                    |
+| ----------------------------------------- | -------------------------------------------- |
+| `npm run dev`                             | Chạy Vite ở chế độ phát triển                |
+| `npm run build`                           | Tạo bản tĩnh và service worker trong `dist/` |
+| `npm run preview`                         | Xem bản production trên localhost            |
+| `npm run typecheck`                       | Kiểm tra TypeScript strict                   |
+| `npm run lint`                            | Kiểm tra ESLint                              |
+| `npm run format` / `npm run format:check` | Định dạng hoặc kiểm tra bằng Prettier        |
+| `npm test` / `npm run test:unit`          | Chạy unit test bằng Vitest                   |
+| `npm run test:e2e`                        | Chạy Playwright khi được yêu cầu             |
+
+Để chạy Playwright lần đầu, dùng `npx playwright install chromium`. Bộ kiểm thử chạy bản production tại `/Undercover/` và mô phỏng một lần phát hành service worker mới.
+
+## Triển khai và kiểm tra ngoại tuyến
+
+1. Chạy `npm ci` và `npm run build`, rồi triển khai nội dung thư mục `dist/` lên HTTPS. Đặt `index.html` và `sw.js` ở thư mục gốc của ứng dụng. Base mặc định tương đối, phù hợp cả với GitHub Pages tại `/Undercover/`. Để tạo đường dẫn tuyệt đối, chạy `npm run build -- --base=/Undercover/`.
+2. Dùng `npm run preview` để xác minh bản production trên localhost. Mở app khi có mạng, đợi trình duyệt cài service worker và tải lại trang để worker kiểm soát tab. Trong menu trình duyệt, chọn cài ứng dụng hoặc thêm vào màn hình chính.
+3. Bật chế độ máy bay hoặc chọn Offline trong DevTools. Mở lại ứng dụng, tạo ván, phát từ, bỏ phiếu và hoàn thành ván. Tải lại giữa ván và chọn **Tiếp tục** để kiểm tra bản lưu.
+4. Triển khai bản mới trên cùng origin và đường dẫn. Khi ứng dụng báo có phiên bản mới, nút **Cập nhật** khả dụng sau khi kết thúc ván hoặc trở về thiết lập. Cập nhật rồi chọn **Tiếp tục** để kiểm tra vị trí đang chơi.
+
+Dữ liệu được lưu trong localStorage, gồm ván, hồ sơ và điểm, từ tự tạo, lịch sử từ đã dùng và tùy chọn. Bản lưu gắn với hồ sơ trình duyệt và origin hiện tại. Khi nâng cấp, ứng dụng đọc dữ liệu v1 hợp lệ và giữ lại các khóa cũ. Dữ liệu sai định dạng được báo trong giao diện và bản gốc được giữ lại.
+
+## Cấu trúc
+
+- `src/game/` chứa mô hình, luật và reducer TypeScript thuần cùng bộ từ.
+- `src/app/` điều phối chuyển trạng thái, các hiệu ứng và lưu ván.
+- `src/features/` chứa màn hình Preact. CSS Modules bổ sung kiểu riêng cho từng màn hình trên bộ token và kiểu dùng chung hiện có.
+- `src/infrastructure/` chứa localStorage, âm thanh, rung, confetti và tích hợp PWA.
+- `tests/unit/` chứa unit test. `tests/e2e/` chứa hành trình Playwright chạy theo yêu cầu.
+
+[Hành vi của bản gốc](docs/legacy-behavior.md)

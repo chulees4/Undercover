@@ -1,0 +1,21 @@
+.notice,
+.update {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border-glass, rgb(255 255 255 / 12%));
+  border-radius: 0.8rem;
+  background: var(--surface-glass, rgb(26 28 51 / 90%));
+}
+
+.update,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.actions {
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
