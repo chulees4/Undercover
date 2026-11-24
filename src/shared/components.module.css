@@ -1,8 +1,6 @@
 .dialog {
   color: var(--text, #f4f3ff);
   margin: auto;
-  width: min(540px, calc(100vw - 28px));
-  max-height: calc(100dvh - 28px);
 }
 
 .dialog::backdrop {

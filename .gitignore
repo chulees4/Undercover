@@ -3,7 +3,8 @@ dist/
 .DS_Store
 Thumbs.db
 *.log
-.vscode/
+/.vscode/*
+!/.vscode/tasks.json
 .idea/
 playwright-report/
 test-results/

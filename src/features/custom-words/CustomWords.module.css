@@ -19,3 +19,7 @@
   gap: 0.5rem;
   padding-block: 0.45rem;
 }
+
+.list li > button {
+  flex-shrink: 0;
+}

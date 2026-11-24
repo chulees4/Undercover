@@ -121,3 +121,24 @@
   border-color: rgba(6, 182, 212, 0.45);
   color: #67e8f9;
 }
+
+@media (max-width: 360px) {
+  .app-shell {
+    padding-inline: 12px;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    padding-inline: 10px;
+  }
+
+  .brand-text h1 {
+    white-space: normal;
+  }
+}
+
+@media (min-width: 768px) {
+  .app-shell {
+    max-width: 720px;
+  }
+}

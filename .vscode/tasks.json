@@ -1,0 +1,71 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start dev server",
+      "type": "npm",
+      "script": "dev",
+      "icon": {
+        "id": "terminal",
+        "color": "terminal.ansiGreen"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Start dev Docker",
+      "type": "process",
+      "command": "docker",
+      "args": ["compose", "up", "--build", "--watch", "dev"],
+      "icon": {
+        "id": "terminal",
+        "color": "terminal.ansiGreen"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Deploy Docker",
+      "type": "process",
+      "command": "docker",
+      "args": ["compose", "up", "--build", "-d", "app"],
+      "icon": {
+        "id": "terminal",
+        "color": "terminal.ansiBlue"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build",
+      "type": "npm",
+      "script": "build",
+      "icon": {
+        "id": "package",
+        "color": "terminal.ansiBlue"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run unit tests",
+      "type": "npm",
+      "script": "test:unit",
+      "icon": {
+        "id": "beaker",
+        "color": "terminal.ansiMagenta"
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

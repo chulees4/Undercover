@@ -28,7 +28,7 @@ export function Voting({
   if (phase.type === 'offline-vote') {
     const selected = alive.find(({ id }) => id === phase.selectedId);
     return (
-      <section class="glass-card">
+      <section class="glass-card voting-stage">
         <h1>🗳️ Vòng {game.roundNumber} • Bỏ phiếu ngoài đời</h1>
         <p>Thảo luận, giơ tay và chạm vào người nhận nhiều phiếu nhất.</p>
         <PlayerGrid
@@ -105,7 +105,7 @@ export function Voting({
         </button>
       </section>
     ) : (
-      <section class="glass-card">
+      <section class="glass-card voting-stage">
         <h1>🔒 Phiếu của {voter.name}</h1>
         <p>Chạm vào người bạn muốn bỏ phiếu loại (phiếu bầu được giữ kín):</p>
         <PlayerGrid
@@ -123,7 +123,7 @@ export function Voting({
   const leadingPlayer = alive.find(({ id }) => id === leaders[0]);
   const justice = justicePlayer(game);
   return (
-    <section class="glass-card">
+    <section class="glass-card voting-stage">
       <h1>📊 Kết quả bỏ phiếu kín</h1>
       <div class={styles.tally}>
         {tally(phase).map(({ id, count }) => {

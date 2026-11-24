@@ -12,9 +12,17 @@
 }
 
 .player-badge-lg {
+  margin: 0 auto 14px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-badge-lg .avatar {
   width: 82px;
   height: 82px;
-  margin: 0 auto 14px;
   border-radius: 26px;
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(6, 182, 212, 0.35));
   border: 2px solid rgba(139, 92, 246, 0.6);
@@ -237,7 +245,7 @@
 
 .player-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -304,9 +312,6 @@
 .p-name {
   font-size: 14px;
   font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .p-status {
@@ -422,7 +427,7 @@
 
 .word-reveal-pair {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin: 14px 0;
 }
@@ -491,3 +496,16 @@
 .role-chip.CIVILIAN { background: rgba(6, 182, 212, 0.22); color: #67e8f9; }
 .role-chip.UNDERCOVER { background: rgba(249, 115, 22, 0.25); color: #fdba74; }
 .role-chip.MR_WHITE { background: rgba(139, 92, 246, 0.28); color: #ddd6fe; }
+
+@media (max-width: 360px) {
+  .player-grid,
+  .word-reveal-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .voting-stage .player-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
