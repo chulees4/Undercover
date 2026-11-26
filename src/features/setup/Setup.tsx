@@ -151,7 +151,7 @@ export function Setup({
       {game && (
         <div class="resume-banner">
           <div class="resume-status">
-            <strong>⚡ Có ván đang chơi dở!</strong>
+            <strong>⚡ Đang chơi dở!</strong>
             <div class="marquee">
               <span>
                 Vòng {game.roundNumber} · {game.players.length} người chơi

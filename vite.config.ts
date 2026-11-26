@@ -39,7 +39,7 @@ export default defineConfig({
       },
       workbox: {
         // The PWA plugin adds the manifest and its icons with their own revisions.
-        globPatterns: ['**/*.{html,js,css,woff2,otf}'],
+        globPatterns: ['**/*.{html,js,css,woff2,otf,ttf}'],
         navigateFallback: 'index.html',
         cleanupOutdatedCaches: true,
         importScripts: ['cleanup-legacy-cache.js'],
