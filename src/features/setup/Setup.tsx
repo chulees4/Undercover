@@ -39,7 +39,7 @@ function Stepper({
           disabled={value <= min}
           onClick={() => change(value - 1)}
         >
-          −
+          -
         </button>
         <span class="step-val">{value}</span>
         <button
@@ -69,7 +69,7 @@ function Segment<T extends string | number>({
       {options.map((option) => (
         <button
           key={option.value}
-          class={`seg-btn ${value === option.value ? 'active' : ''}`}
+          class="seg-btn"
           aria-pressed={value === option.value}
           onClick={() => change(option.value)}
         >
@@ -116,6 +116,7 @@ function Toggle({
 export function Setup({
   state,
   send,
+  start,
   resume,
   manageWords,
   clearProfiles,
@@ -123,6 +124,7 @@ export function Setup({
 }: {
   state: State;
   send: (action: Command) => boolean;
+  start: () => void;
   resume: () => void;
   manageWords: () => void;
   clearProfiles: () => void;
@@ -148,10 +150,12 @@ export function Setup({
     <div class={styles.setup}>
       {game && (
         <div class="resume-banner">
-          <div>
+          <div class="resume-status">
             <strong>⚡ Có ván đang chơi dở!</strong>
-            <div>
-              Vòng {game.roundNumber} · {game.players.length} người chơi
+            <div class="marquee">
+              <span>
+                Vòng {game.roundNumber} · {game.players.length} người chơi
+              </span>
             </div>
           </div>
           <div class={styles.actions}>
@@ -159,11 +163,11 @@ export function Setup({
               Tiếp tục
             </button>
             <button
-              class="icon-btn"
+                class="icon-btn btn-danger"
               aria-label="Bỏ ván đã lưu"
               onClick={discard}
             >
-              ✕
+              x
             </button>
           </div>
         </div>
@@ -172,7 +176,7 @@ export function Setup({
         title="👥 Người chơi & Phân bổ vai trò"
         action={
           profiles.length > 0 && (
-            <button class="btn btn-secondary" onClick={clearProfiles}>
+            <button class="btn btn-sm btn-danger" onClick={clearProfiles}>
               🔄 Xóa điểm
             </button>
           )
@@ -192,14 +196,16 @@ export function Setup({
           }
         />
         <Stepper
-          label="🕵️ Gián điệp (Undercover)"
+          label="🕵️ Gián điệp"
+          details="Undercover"
           value={undercoverCount}
           min={mrWhiteCount ? 0 : 1}
           max={maxImpostors - mrWhiteCount}
           change={(count) => set({ undercoverCount: count })}
         />
         <Stepper
-          label="🎩 Mũ Trắng (Mr. White)"
+          label="🎩 Mũ Trắng"
+          details="Mr. White"
           value={mrWhiteCount}
           min={undercoverCount ? 0 : 1}
           max={maxImpostors - undercoverCount}
@@ -231,7 +237,7 @@ export function Setup({
       <Section
         title="📚 Chủ đề từ khóa"
         action={
-          <button class="btn btn-secondary" onClick={manageWords}>
+          <button class="btn btn-sm" onClick={manageWords}>
             ✍️ Quản lý từ tự tạo
           </button>
         }
@@ -246,7 +252,7 @@ export function Setup({
             return (
               <button
                 key={id}
-                class={`cat-chip ${selected ? 'selected' : ''}`}
+                class="cat-chip"
                 aria-pressed={selected}
                 disabled={id === 'custom' && !customWords.length && !selected}
                 onClick={() =>
@@ -294,7 +300,7 @@ export function Setup({
       <button
         class="btn btn-primary"
         disabled={!wordCount}
-        onClick={() => send({ type: 'START' })}
+        onClick={start}
       >
         🚀 Bắt đầu ván chơi
       </button>

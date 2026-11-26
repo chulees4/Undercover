@@ -18,8 +18,8 @@ export default defineConfig({
         scope: './',
         display: 'standalone',
         orientation: 'portrait',
-        background_color: '#070914',
-        theme_color: '#070914',
+        background_color: '#081120',
+        theme_color: '#081120',
         lang: 'vi',
         categories: ['games', 'entertainment'],
         icons: [
@@ -39,7 +39,7 @@ export default defineConfig({
       },
       workbox: {
         // The PWA plugin adds the manifest and its icons with their own revisions.
-        globPatterns: ['**/*.{html,js,css}'],
+        globPatterns: ['**/*.{html,js,css,woff2,otf}'],
         navigateFallback: 'index.html',
         cleanupOutdatedCaches: true,
         importScripts: ['cleanup-legacy-cache.js'],

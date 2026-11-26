@@ -69,7 +69,7 @@ export function CustomWords({
           onInput={(event) => setSynonyms(event.currentTarget.value)}
         />
         <button class="btn btn-primary" type="submit">
-          ＋ Thêm cặp từ
+          + Thêm cặp từ
         </button>
       </form>
       <p role="status">{notice}</p>

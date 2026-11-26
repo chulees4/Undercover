@@ -19,14 +19,17 @@ async function revealPlayer(page: Page, seat: number) {
   await expect(secret(page)).toHaveCount(0);
   await page.getByRole('button', { name: /Sẵn sàng/ }).click();
   const hold = page.getByRole('button', { name: 'Nhấn giữ để xem từ bí mật' });
-  await expect(page.getByRole('button', { name: /Đã nhớ/ })).toBeDisabled();
+  const advanceButton = page.getByRole('button', {
+    name: /^(Chuyển người tiếp theo|Bắt đầu vòng 1)$/,
+  });
+  await expect(page.getByRole('button', { name: 'Cần xem từ bí mật', exact: true })).toBeDisabled();
   await hold.scrollIntoViewIfNeeded();
   await hold.hover();
   await page.mouse.down();
   await expect(secret(page)).toBeVisible();
   await page.mouse.up();
   await expect(secret(page)).toHaveCount(0);
-  await page.getByRole('button', { name: /Đã nhớ/ }).click();
+  await advanceButton.click();
   await expect(secret(page)).toHaveCount(0);
 }
 

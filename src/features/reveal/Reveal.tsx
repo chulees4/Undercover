@@ -2,7 +2,7 @@ import { useEffect, useState } from 'preact/hooks';
 import type { Command } from '../../app/game-controller';
 import { AVATAR_LIST } from '../../game/data/avatars';
 import type { Game, Phase } from '../../game/model';
-import { PlayerBadge } from '../../shared/components';
+import { CardTitle, PlayerBadge } from '../../shared/components';
 import styles from './Reveal.module.css';
 
 export function Reveal({
@@ -20,7 +20,7 @@ export function Reveal({
 }) {
   const player = game.players[phase.index];
   const [holding, setHolding] = useState(false);
-  const [name, setName] = useState('');
+  const [name, setName] = useState(player.namedByUser ? player.name : '');
   const hide = () => setHolding(false);
   useEffect(() => {
     window.addEventListener('blur', hide);
@@ -42,17 +42,15 @@ export function Reveal({
   if (phase.step === 'privacy') {
     return (
       <section class="glass-card center-stage">
-        <h1>
-          Phát từ bí mật • {player.seat} / {game.players.length}
-        </h1>
+        <CardTitle centered title={`Phát từ bí mật • ${player.seat} / ${game.players.length}`} />
         <p>Đưa điện thoại cho</p>
         <PlayerBadge player={player} />
         <p>Đảm bảo không có ai xung quanh đang nhìn vào màn hình của bạn!</p>
         <button
-          class="btn btn-primary"
+        class="btn btn-primary"
           onClick={() => send({ type: 'OPEN_CARD' })}
         >
-          👁️ Tôi là {player.name} — Sẵn sàng
+          Sẵn sàng
         </button>
       </section>
     );
@@ -60,50 +58,51 @@ export function Reveal({
 
   return (
     <section class={`glass-card center-stage ${styles.reveal}`}>
-      <h1>
-        Người chơi #{player.seat} / {game.players.length}
-      </h1>
-      <PlayerBadge player={player} />
-      <p role="status">{seen ? '✓ Đã xem từ' : '🔒 Chưa xem'}</p>
-      {!player.namedByUser && (
-        <div class={styles.profile}>
-          <label for="playerNameInput">
-            Nhập tên của bạn &amp; chọn biểu tượng:
-          </label>
-          <input
-            class="input-field"
-            id="playerNameInput"
-            maxlength={16}
-            placeholder={player.name}
-            value={name}
-            onInput={(event) => setName(event.currentTarget.value)}
-          />
-          <div class="avatar-picker">
-            {AVATAR_LIST.map((avatar) => (
-              <button
-                key={avatar}
-                class={`avatar-opt ${player.avatar === avatar ? 'selected' : ''}`}
-                aria-label={`Chọn biểu tượng ${avatar}`}
-                aria-pressed={player.avatar === avatar}
-                onClick={() => send({ type: 'EDIT_PLAYER', avatar })}
-              >
-                {avatar}
-              </button>
-            ))}
-          </div>
+      <CardTitle centered title={`Người chơi #${player.seat} / ${game.players.length}`} />
+      <PlayerBadge player={player} showName={false} />
+      <div class={styles.profile}>
+        <label for="playerNameInput">Nhập tên của bạn:</label>
+        <input
+          class="input-field"
+          id="playerNameInput"
+          maxlength={16}
+          placeholder={player.name}
+          value={name}
+          onInput={(event) => setName(event.currentTarget.value)}
+        />
+        <span id="playerAvatarLabel">Chọn biểu tượng:</span>
+        <div
+          class="avatar-picker"
+          role="group"
+          aria-labelledby="playerAvatarLabel"
+        >
+          {AVATAR_LIST.map((avatar) => (
+            <button
+              key={avatar}
+              class="avatar-opt"
+              aria-label={`Chọn biểu tượng ${avatar}`}
+              aria-pressed={player.avatar === avatar}
+              disabled={game.players.some(
+                (other) => other.wordLocked && other.avatar === avatar,
+              )}
+              onClick={() => send({ type: 'EDIT_PLAYER', avatar })}
+            >
+              {avatar}
+            </button>
+          ))}
         </div>
-      )}
+      </div>
       <button
         type="button"
         class={`hold-card ${styles.hold} ${holding ? 'holding' : ''} ${holding && player.role === 'MR_WHITE' ? 'mrwhite-reveal' : ''}`}
         aria-label="Nhấn giữ để xem từ bí mật"
         onPointerDown={(event) => {
           if (event.button !== 0 || !event.isPrimary) return;
-          event.currentTarget.setPointerCapture(event.pointerId);
           show();
         }}
         onPointerUp={hide}
         onPointerCancel={hide}
+        onPointerLeave={hide}
         onLostPointerCapture={hide}
         onBlur={hide}
         onContextMenu={(event) => event.preventDefault()}
@@ -148,7 +147,7 @@ export function Reveal({
           </span>
         ) : (
           <>
-            <span>🔒</span>
+            <span class="hold-icon">🔒</span>
             <strong>NHẤN GIỮ ĐỂ XEM TỪ BÍ MẬT</strong>
           </>
         )}
@@ -165,16 +164,14 @@ export function Reveal({
       </div>
       <button
         class="btn btn-primary"
-        disabled={!seen || holding}
+        disabled={!seen}
         onClick={() => {
           hide();
-          if (!player.namedByUser) send({ type: 'EDIT_PLAYER', name });
+          send({ type: 'EDIT_PLAYER', name });
           send({ type: 'LOCK_WORD' });
         }}
       >
-        {last
-          ? '🚀 Đã nhớ — Khóa từ & Bắt đầu Vòng 1'
-          : '🔒 Đã nhớ — Khóa từ & Chuyển người tiếp theo'}
+        {!seen ? 'Cần xem từ bí mật' : last ? 'Bắt đầu vòng 1' : 'Chuyển người tiếp theo'}
       </button>
     </section>
   );

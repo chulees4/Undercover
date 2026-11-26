@@ -15,6 +15,7 @@ import {
   matchesGuess,
   newGame,
   normalizeGuess,
+  prepareRevealAvatar,
   profilesFrom,
   score,
   victory,
@@ -165,7 +166,13 @@ function updateGame(game: Game, action: Action): Game | null {
         : null;
     case 'EDIT_PLAYER': {
       if (phase.type !== 'reveal' || phase.step !== 'card') return null;
-      if (action.avatar !== undefined && !AVATAR_LIST.includes(action.avatar))
+      if (
+        action.avatar !== undefined &&
+        (!AVATAR_LIST.includes(action.avatar) ||
+          game.players.some(
+            (player) => player.wordLocked && player.avatar === action.avatar,
+          ))
+      )
         return null;
       const players = game.players.map((player, index) =>
         index === phase.index
@@ -186,11 +193,15 @@ function updateGame(game: Game, action: Action): Game | null {
       );
       if (phase.index + 1 === players.length)
         return discussion({ ...game, players }, action.random);
-      return {
-        ...game,
-        players,
-        phase: { ...phase, index: phase.index + 1, step: 'privacy' },
-      };
+
+      return prepareRevealAvatar(
+        {
+          ...game,
+          players,
+          phase: { ...phase, index: phase.index + 1, step: 'privacy' },
+        },
+        true,
+      );
     }
     case 'NEXT_SPEAKER':
       return phase.type === 'description'

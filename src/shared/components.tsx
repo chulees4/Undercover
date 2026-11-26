@@ -3,6 +3,25 @@ import { useEffect, useRef } from 'preact/hooks';
 import type { Player } from '../game/model';
 import styles from './components.module.css';
 
+export function CardTitle({
+  title,
+  action,
+  as: Heading = 'h1',
+  centered = false,
+}: {
+  title: ComponentChildren;
+  action?: ComponentChildren;
+  as?: 'h1' | 'h2';
+  centered?: boolean;
+}) {
+  return (
+    <div class={`card-title${centered ? ' card-title-centered' : ''}`}>
+      <Heading class="card-title-heading">{title}</Heading>
+      {action}
+    </div>
+  );
+}
+
 export function Section({
   title,
   action,
@@ -14,10 +33,7 @@ export function Section({
 }) {
   return (
     <section class="glass-card">
-      <div class="card-title">
-        <h2 class="card-title-left">{title}</h2>
-        {action}
-      </div>
+      <CardTitle as="h2" title={title} action={action} />
       {children}
     </section>
   );
@@ -60,7 +76,7 @@ export function Dialog({
             aria-label="Đóng"
             onClick={close}
           >
-            ✕
+            x
           </button>
         )}
       </div>
@@ -69,11 +85,17 @@ export function Dialog({
   );
 }
 
-export function PlayerBadge({ player }: { player: Player }) {
+export function PlayerBadge({
+  player,
+  showName = true,
+}: {
+  player: Player;
+  showName?: boolean;
+}) {
   return (
     <div class="player-badge-lg">
       <span class="avatar">{player.avatar}</span>
-      <strong>{player.name}</strong>
+      {showName && <strong>{player.name}</strong>}
     </div>
   );
 }

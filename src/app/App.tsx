@@ -11,7 +11,7 @@ import { Dialog } from '../shared/components';
 import type { bootstrap } from './bootstrap';
 import styles from './App.module.css';
 
-type Modal = 'rules' | 'words' | 'home' | 'scores' | 'discard';
+type Modal = 'rules' | 'words' | 'home' | 'scores' | 'discard' | 'start';
 
 function Rules({ close }: { close: () => void }) {
   return (
@@ -117,12 +117,21 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
   const close = () => setModal(null);
   const send = controller.dispatch;
 
+  function requestStart() {
+    if (state.game) {
+      setModal('start');
+      return;
+    }
+    send({ type: 'START' });
+  }
+
   function screen() {
     if (!game || !phase)
       return (
         <Setup
           state={state}
           send={send}
+          start={requestStart}
           resume={controller.resume}
           manageWords={() => setModal('words')}
           clearProfiles={() => setModal('scores')}
@@ -181,7 +190,7 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
             </span>
             <div class="brand-text">
               <h1>UNDERCOVER</h1>
-              <span>Gián Điệp Ẩn Danh • Offline</span>
+              <span>Gián Điệp Ẩn Danh</span>
             </div>
           </div>
           <div class="topbar-actions">
@@ -198,7 +207,7 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
               </button>
             )}
             <button
-              class={`icon-btn ${sound ? 'active-sound' : ''}`}
+              class="icon-btn sound-toggle"
               aria-label="Âm thanh"
               aria-pressed={sound}
               onClick={controller.toggleSound}
@@ -268,7 +277,7 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
             Ván chơi được lưu tự động. Chọn Tiếp tục ở màn hình thiết lập để
             quay lại.
           </p>
-          <div class={styles.actions}>
+          <div class="modal-actions">
             <button class="btn btn-secondary" onClick={close}>
               Ở lại ván
             </button>
@@ -287,7 +296,7 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
       {modal === 'scores' && (
         <Dialog title="🔄 Xóa hồ sơ và điểm?" close={close}>
           <p>Tên, biểu tượng và điểm đã lưu của người chơi sẽ bị xóa.</p>
-          <div class={styles.actions}>
+          <div class="modal-actions">
             <button class="btn btn-secondary" onClick={close}>
               Hủy
             </button>
@@ -303,20 +312,23 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
           </div>
         </Dialog>
       )}
-      {modal === 'discard' && (
-        <Dialog title="Bỏ ván đã lưu?" close={close}>
-          <div class={styles.actions}>
+      {(modal === 'discard' || modal === 'start') && (
+        <Dialog
+          title={modal === 'start' ? 'Bỏ ván đã lưu và bắt đầu ván mới?' : 'Bỏ ván đã lưu?'}
+          close={close}
+        >
+          <div class="modal-actions">
             <button class="btn btn-secondary" onClick={close}>
               Hủy
             </button>
             <button
               class="btn btn-danger"
               onClick={() => {
-                send({ type: 'RESET' });
+                send({ type: modal === 'start' ? 'START' : 'RESET' });
                 close();
               }}
             >
-              Bỏ ván
+              {modal === 'start' ? 'Bỏ ván và bắt đầu' : 'Bỏ ván'}
             </button>
           </div>
         </Dialog>

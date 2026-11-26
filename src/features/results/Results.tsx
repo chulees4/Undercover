@@ -3,7 +3,7 @@ import type { Command } from '../../app/game-controller';
 import { roleEmoji, roleLabelVN } from '../../game/data/avatars';
 import type { Game, Phase } from '../../game/model';
 import { startConfetti } from '../../infrastructure/confetti';
-import { Section } from '../../shared/components';
+import { CardTitle, Section } from '../../shared/components';
 
 export function Results({
   game,
@@ -35,7 +35,7 @@ export function Results({
     <>
       <canvas id="confettiCanvas" ref={canvas} aria-hidden="true" />
       <section class="glass-card center-stage">
-        <h1>{title}</h1>
+        <CardTitle centered title={title} />
         <p>{subtitle}</p>
         <div class="word-reveal-pair">
           <div class="word-box civ">

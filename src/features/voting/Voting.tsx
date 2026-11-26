@@ -9,7 +9,7 @@ import {
   tiedLeaders,
 } from '../../game/reducer';
 import { living } from '../../game/rules';
-import { Dialog, PlayerBadge, PlayerGrid } from '../../shared/components';
+import { CardTitle, Dialog, PlayerBadge, PlayerGrid } from '../../shared/components';
 import styles from './Voting.module.css';
 
 type VotePhase = Extract<Phase, { type: 'offline-vote' | 'secret-vote' }>;
@@ -29,7 +29,7 @@ export function Voting({
     const selected = alive.find(({ id }) => id === phase.selectedId);
     return (
       <section class="glass-card voting-stage">
-        <h1>🗳️ Vòng {game.roundNumber} • Bỏ phiếu ngoài đời</h1>
+        <CardTitle title={`🗳️ Vòng ${game.roundNumber} • Bỏ phiếu ngoài đời`} />
         <p>Thảo luận, giơ tay và chạm vào người nhận nhiều phiếu nhất.</p>
         <PlayerGrid
           players={alive}
@@ -60,7 +60,7 @@ export function Voting({
             close={() => setConfirm(false)}
           >
             <p>Vai trò của người chơi sẽ được lật cho cả nhóm xem.</p>
-            <div class={styles.actions}>
+            <div class="modal-actions">
               <button
                 class="btn btn-secondary"
                 onClick={() => setConfirm(false)}
@@ -92,9 +92,7 @@ export function Voting({
       ) + Object.keys(phase.votes).length;
     return phase.step === 'privacy' ? (
       <section class="glass-card center-stage">
-        <h1>
-          🔒 Bỏ phiếu kín • {ballotCount + 1}/{alive.length}
-        </h1>
+        <CardTitle centered title={`🔒 Bỏ phiếu kín • ${ballotCount + 1}/${alive.length}`} />
         <p>Chuyền máy cho</p>
         <PlayerBadge player={voter} />
         <button
@@ -106,7 +104,7 @@ export function Voting({
       </section>
     ) : (
       <section class="glass-card voting-stage">
-        <h1>🔒 Phiếu của {voter.name}</h1>
+        <CardTitle title={`🔒 Phiếu của ${voter.name}`} />
         <p>Chạm vào người bạn muốn bỏ phiếu loại (phiếu bầu được giữ kín):</p>
         <PlayerGrid
           players={alive.filter(({ id }) => candidates.includes(id))}
@@ -124,7 +122,7 @@ export function Voting({
   const justice = justicePlayer(game);
   return (
     <section class="glass-card voting-stage">
-      <h1>📊 Kết quả bỏ phiếu kín</h1>
+      <CardTitle title="📊 Kết quả bỏ phiếu kín" />
       <div class={styles.tally}>
         {tally(phase).map(({ id, count }) => {
           const player = alive.find((candidate) => candidate.id === id);

@@ -30,6 +30,25 @@ export function wordPool(state: State, config = state.config) {
   );
 }
 
+export function prepareRevealAvatar(game: Game, useDefault = false): Game {
+  if (game.phase.type !== 'reveal') return game;
+
+  const { index } = game.phase;
+  const player = game.players[index];
+  const usedAvatars = new Set(
+    game.players.filter((other) => other.wordLocked).map((other) => other.avatar),
+  );
+  if ((!useDefault || player.namedByUser) && !usedAvatars.has(player.avatar))
+    return game;
+
+  const avatar = AVATAR_LIST.find((option) => !usedAvatars.has(option));
+  if (avatar === undefined || avatar === player.avatar) return game;
+
+  const players = [...game.players];
+  players[index] = { ...player, avatar };
+  return { ...game, players };
+}
+
 export function profilesFrom(players: Player[]): Profile[] {
   return players.map(({ name, avatar, namedByUser, seat, totalScore }) => ({
     name,

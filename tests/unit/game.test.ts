@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { AVATAR_LIST } from '../../src/game/data/avatars';
 import {
   DEFAULT_CONFIG,
   defaultRoleCounts,
@@ -139,6 +140,20 @@ describe('game setup and reveal', () => {
       discussion.players.find(({ id }) => id === discussion.firstSpeakerId)
         ?.role,
     ).not.toBe('MR_WHITE');
+  });
+
+  it('reserves locked avatars and assigns the first available avatar to the next new player', () => {
+    const [first, second, third] = AVATAR_LIST;
+    let state = apply(start(), { type: 'OPEN_CARD' });
+    state = apply(state, { type: 'EDIT_PLAYER', avatar: second });
+    state = apply(state, { type: 'LOCK_WORD', random: seeded() });
+
+    expect(gameOf(state).players[1].avatar).toBe(first);
+    state = apply(state, { type: 'OPEN_CARD' });
+    expect(reduce(state, { type: 'EDIT_PLAYER', avatar: second }).ok).toBe(false);
+
+    state = apply(state, { type: 'LOCK_WORD', random: seeded() });
+    expect(gameOf(state).players[2].avatar).toBe(third);
   });
 
   it('chooses an unused word and recycles only the exhausted category', () => {

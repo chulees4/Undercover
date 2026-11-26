@@ -3,7 +3,7 @@ import type { Command } from '../../app/game-controller';
 import { roleEmoji, roleLabelVN } from '../../game/data/avatars';
 import type { Game, Phase, Player } from '../../game/model';
 import { revengeTargets } from '../../game/reducer';
-import { Dialog, PlayerBadge, PlayerGrid } from '../../shared/components';
+import { CardTitle, Dialog, PlayerBadge, PlayerGrid } from '../../shared/components';
 import styles from './Elimination.module.css';
 
 type EliminationPhase = Extract<Phase, { type: 'elimination' }>;
@@ -65,7 +65,7 @@ function Guess({
           value={guess}
           onInput={(event) => setGuess(event.currentTarget.value)}
         />
-        <div class={styles.actions}>
+        <div class="modal-actions">
           <button
             type="button"
             class="btn btn-secondary"
@@ -116,7 +116,7 @@ export function Elimination({
   const advance = () => send({ type: 'ADVANCE_ELIMINATION' });
   return (
     <section class="glass-card center-stage">
-      <h1>{causes[phase.target.cause]}</h1>
+      <CardTitle centered title={causes[phase.target.cause]} />
       <PlayerBadge player={player} />
       <div class="flip-scene">
         <div class={`flip-card ${flipped ? 'flipped' : ''}`}>

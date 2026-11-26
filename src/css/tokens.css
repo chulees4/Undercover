@@ -2,36 +2,27 @@
    DESIGN TOKENS & BASE STYLES (100% OFFLINE - NO EXTERNAL CDN REQUIRED)
    ========================================================================== */
 :root {
-  --bg-deep: #070914;
-  --bg-mid: #10132a;
-  --surface: rgba(20, 24, 48, 0.78);
-  --surface-solid: #161a36;
-  --surface-elevated: rgba(31, 37, 72, 0.85);
-  --border: rgba(255, 255, 255, 0.11);
-  --border-strong: rgba(255, 255, 255, 0.22);
-
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
-
-  --neon-purple: #8b5cf6;
-  --neon-purple-glow: rgba(139, 92, 246, 0.45);
-  --neon-cyan: #06b6d4;
-  --neon-cyan-glow: rgba(6, 182, 212, 0.4);
-  --neon-orange: #f97316;
-  --neon-orange-glow: rgba(249, 115, 22, 0.4);
-  --neon-pink: #ec4899;
-  --neon-green: #10b981;
-  --neon-red: #ef4444;
-  --neon-amber: #f59e0b;
-
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 22px;
-  --radius-full: 9999px;
-
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-  --shadow-card: 0 14px 36px rgba(0, 0, 0, 0.45);
+  --bg: #081120;
+  --surface: #142746;
+  --surface-raised: #20375c;
+  --sky-shadow: #10203a;
+  --ink: #081120;
+  --shadow: #03070e;
+  --text: #f4f8ff;
+  --text-muted: #b2c5e2;
+  --border: #6887b4;
+  --divider: rgb(178 197 226 / 30%);
+  --accent: #63a9ff;
+  --accent-hover: #91bfff;
+  --success: var(--accent-hover);
+  --success-hover: #b5d6ff;
+  --danger: #ff8c9d;
+  --danger-hover: #ffb3bf;
+  --backdrop: rgb(3 7 14 / 78%);
+  --font-pixel: "SVN-Determination Sans", "Press Start 2P", "Courier New", monospace;
+  --shadow-card: 4px 4px 0 var(--shadow);
+  --shadow-button-inset: inset 0 -4px 0 rgb(8 17 32 / 22%);
+  --shadow-button: var(--shadow-button-inset), var(--shadow-card);
 }
 
 * {
@@ -44,11 +35,44 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  font-family: var(--font-sans);
-  background-color: var(--bg-deep);
-  color: var(--text-main);
+  font-family: var(--font-pixel);
+  font-synthesis: none;
+  background-color: var(--bg);
+  color: var(--text);
   overflow-x: hidden;
   line-height: 1.5;
+}
+
+button {
+  text-transform: uppercase;
+}
+
+button,
+input {
+  border-radius: 0;
+  font-family: inherit;
+  font-synthesis: none;
+}
+
+h1,
+h2 {
+  font-weight: 400;
+  text-transform: uppercase;
+  text-shadow: 3px 3px 0 var(--shadow);
+  overflow-wrap: anywhere;
+}
+
+h1 { font-size: 22px; }
+h2 { font-size: 18px; }
+
+img,
+canvas {
+  image-rendering: pixelated;
+}
+
+:focus-visible {
+  outline: 4px solid var(--accent-hover);
+  outline-offset: 2px;
 }
 
 /* Utility Helpers */
@@ -63,3 +87,30 @@ body {
 .mb-8 { margin-bottom: 8px; }
 .mb-12 { margin-bottom: 12px; }
 .hidden { display: none !important; }
+@font-face {
+  font-family: "SVN-Determination Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/svn-determination-sans.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Press Start 2P";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  size-adjust: 80%;
+  src: url("../assets/fonts/press-start-2p-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Press Start 2P";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  size-adjust: 80%;
+  src: url("../assets/fonts/press-start-2p-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}

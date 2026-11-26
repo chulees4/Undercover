@@ -1,5 +1,6 @@
 import { reduce, type Action } from '../game/reducer';
 import type { Random, State } from '../game/model';
+import { prepareRevealAvatar } from '../game/rules';
 import type { Repository } from '../infrastructure/persistence/repository';
 
 type RandomAction = Extract<Action, { random: Random }>;
@@ -162,9 +163,16 @@ export function createGameController(
     },
     resume() {
       paused = false;
-      if (state.game && state.config !== state.game.config) {
-        state = { ...state, config: state.game.config };
-        pendingWrites.add('preferences');
+      if (state.game) {
+        const game = prepareRevealAvatar(state.game);
+        if (game !== state.game) {
+          state = { ...state, game };
+          pendingWrites.add('session');
+        }
+        if (state.config !== game.config) {
+          state = { ...state, config: game.config };
+          pendingWrites.add('preferences');
+        }
       }
       flush();
       publish();

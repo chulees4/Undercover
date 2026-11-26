@@ -1,28 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Undercover Maskable Icon">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1e1b4b"/>
-      <stop offset="100%" stop-color="#070914"/>
-    </linearGradient>
-    <linearGradient id="neon" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8b5cf6"/>
-      <stop offset="100%" stop-color="#06b6d4"/>
-    </linearGradient>
-    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="100%" stop-color="#ec4899"/>
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" fill="url(#bg)"/>
-  <g transform="translate(56, 56) scale(0.78)">
-    <path d="M136 226 C154 140, 198 118, 256 128 C314 118, 358 140, 376 226 Z" fill="url(#neon)"/>
-    <ellipse cx="256" cy="232" rx="164" ry="26" fill="url(#neon)"/>
-    <path d="M150 212 Q256 232 362 212" fill="none" stroke="url(#accent)" stroke-width="14" stroke-linecap="round"/>
-    <g fill="#070914" stroke="#67e8f9" stroke-width="10">
-      <rect x="144" y="274" width="94" height="58" rx="22"/>
-      <rect x="274" y="274" width="94" height="58" rx="22"/>
-      <line x1="238" y1="300" x2="274" y2="300" stroke-width="10"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Undercover Maskable Icon" shape-rendering="crispEdges">
+  <rect width="512" height="512" fill="#081120"/>
+  <g transform="translate(56 56) scale(0.78)">
+    <!-- Detective hat -->
+    <path d="M144 224V192H160V168H184V144H216V128H296V144H328V168H352V192H368V224Z" fill="#63a9ff"/>
+    <rect x="144" y="208" width="224" height="16" fill="#91bfff"/>
+    <path d="M96 224H416V240H400V256H112V240H96Z" fill="#63a9ff"/>
+    <!-- Glasses -->
+    <path d="M232 304H280" stroke="#f4f8ff" stroke-width="12"/>
+    <g fill="#142746" stroke="#f4f8ff" stroke-width="12">
+      <rect x="144" y="280" width="88" height="48"/>
+      <rect x="280" y="280" width="88" height="48"/>
     </g>
-    <path d="M158 386 L256 426 L354 386 L326 352 L256 382 L186 352 Z" fill="url(#accent)" opacity="0.9"/>
+    <!-- Collar -->
+  <path d="M160 352H192V368H224V384H288V368H320V352H352V384H320V400H288V416H224V400H192V384H160Z" fill="#b5d6ff"/>
   </g>
 </svg>
