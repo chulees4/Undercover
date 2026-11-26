@@ -102,14 +102,6 @@ docker compose up --build -d app
 
 Open <http://localhost:8080> on the Docker host. The production image serves the built PWA with unprivileged NGINX. For a public deployment, configure an HTTPS reverse proxy on the host to forward to `127.0.0.1:8080` so browsers can enable PWA installation and offline play. Set `UNDERCOVER_BIND_ADDRESS` or `UNDERCOVER_HTTP_PORT` to change the published address or port.
 
-## Project structure
-
-- `src/game/` contains the pure TypeScript model, rules, and reducer, along with the built-in word sets.
-- `src/app/` coordinates state transitions, effects, and saving.
-- `src/features/` contains the Preact screens. CSS Modules add screen-specific styles on top of shared styles and design tokens.
-- `src/infrastructure/` handles local storage, audio, vibration, confetti, and PWA integration.
-- `tests/unit/` contains unit tests. `tests/e2e/` contains the Playwright flows.
-
 See [legacy behavior notes (Vietnamese)](docs/legacy-behavior.md) for details about the original implementation.
 
 ## Contributing
