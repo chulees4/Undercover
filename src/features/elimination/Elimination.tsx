@@ -1,17 +1,23 @@
+import { t } from '../../i18n';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import type { Command } from '../../app/game-controller';
 import { roleEmoji, roleLabelVN } from '../../game/data/avatars';
 import type { Game, Phase, Player } from '../../game/model';
 import { revengeTargets } from '../../game/reducer';
-import { CardTitle, Dialog, PlayerBadge, PlayerGrid } from '../../shared/components';
+import {
+  CardTitle,
+  Dialog,
+  PlayerBadge,
+  PlayerGrid,
+} from '../../shared/components';
 import styles from './Elimination.module.css';
 
 type EliminationPhase = Extract<Phase, { type: 'elimination' }>;
 
 const causes = {
-  VOTE: '🗳️ Bị bỏ phiếu loại',
-  LOVER: '💔 Bị loại theo Cặp đôi Người tình',
-  AVENGER: '⚔️ Bị Kẻ báo thù kéo theo',
+  VOTE: `🗳️ ${t('game.elimination.eliminatedByVote')}`,
+  LOVER: `💔 ${t('game.elimination.eliminatedByLover')}`,
+  AVENGER: `⚔️ ${t('game.elimination.eliminatedByAvenger')}`,
 } satisfies Record<EliminationPhase['target']['cause'], string>;
 
 function Guess({
@@ -45,10 +51,10 @@ function Guess({
   }, []);
 
   return (
-    <Dialog title="🎩⚡ Cơ hội cuối của Mũ Trắng!">
-      <p>{player.name} có 20 giây để đoán từ khóa của Dân thường.</p>
+    <Dialog title={`🎩⚡ ${t('game.elimination.mrWhiteLastChance')}`}>
+      <p>{t('game.elimination.guessInstructions', { name: player.name })}</p>
       <p class={`timer-digits ${seconds <= 5 ? 'danger' : ''}`}>
-        {seconds} giây
+        {t('game.elimination.secondsRemaining', { count: seconds })}
       </p>
       <form
         class={styles.guess}
@@ -57,7 +63,7 @@ function Guess({
           if (guess.trim()) submit(guess);
         }}
       >
-        <label for="white-guess">Từ khóa Dân thường</label>
+        <label for="white-guess">{t('game.elimination.civilianWord')}</label>
         <input
           class="input-field"
           id="white-guess"
@@ -71,14 +77,14 @@ function Guess({
             class="btn btn-secondary"
             onClick={() => submit('')}
           >
-            Bỏ cuộc
+            {t('game.elimination.giveUp')}
           </button>
           <button
             type="submit"
             class="btn btn-primary"
             disabled={!guess.trim()}
           >
-            🎯 Đoán ngay
+            {`🎯 ${t('game.elimination.guessNow')}`}
           </button>
         </div>
       </form>
@@ -121,7 +127,7 @@ export function Elimination({
       <div class="flip-scene">
         <div class={`flip-card ${flipped ? 'flipped' : ''}`}>
           <div class="flip-face flip-front" aria-hidden={flipped}>
-            ❓<span>Đang lật vai trò...</span>
+            ❓<span>{t('game.elimination.revealingRole')}</span>
           </div>
           <div
             class={`flip-face flip-back role-${player.role}`}
@@ -129,18 +135,18 @@ export function Elimination({
           >
             {flipped && (
               <>
-                <span>VAI TRÒ THẬT</span>
+                <span>{t('game.elimination.actualRole')}</span>
                 <strong>
                   {roleEmoji(player.role)} {roleLabelVN(player.role)}
                 </strong>
                 {player.specialRoles.includes('JUSTICE') && (
-                  <span>⚖️ Nữ thần Công lý</span>
+                  <span>{`⚖️ ${t('game.elimination.justiceRole')}`}</span>
                 )}
                 {player.specialRoles.includes('LOVER') && (
-                  <span>💘 Người tình</span>
+                  <span>{`💘 ${t('game.elimination.loverRole')}`}</span>
                 )}
                 {player.specialRoles.includes('AVENGER') && (
-                  <span>⚔️ Kẻ báo thù</span>
+                  <span>{`⚔️ ${t('game.elimination.avengerRole')}`}</span>
                 )}
               </>
             )}
@@ -149,7 +155,7 @@ export function Elimination({
       </div>
       {flipped && (phase.step === 'card' || phase.step === 'settle') && (
         <button class="btn btn-primary" onClick={advance}>
-          Tiếp tục →
+          {`${t('game.elimination.continue')} →`}
         </button>
       )}
       {phase.step === 'guess' && (
@@ -160,34 +166,41 @@ export function Elimination({
         />
       )}
       {phase.step === 'wrong-guess' && (
-        <Dialog title="Đoán chưa chính xác!">
+        <Dialog title={t('game.elimination.incorrectGuess')}>
           <p>
             {phase.missedGuess
-              ? `Từ “${phase.missedGuess}” không khớp với từ của Dân thường.`
-              : 'Hết thời gian hoặc đã bỏ cuộc.'}
+              ? t('game.elimination.guessDoesNotMatchCivilianWord', {
+                  value1: phase.missedGuess,
+                })
+              : t('game.elimination.guessTimedOutOrGivenUp')}
           </p>
-          <p>Mũ Trắng chính thức bị loại!</p>
+          <p>{t('game.elimination.mrWhiteEliminated')}</p>
           <button class="btn btn-primary" onClick={advance}>
-            Tiếp tục ván đấu
+            {t('game.elimination.continueGame')}
           </button>
         </Dialog>
       )}
       {phase.step === 'lover' && (
-        <Dialog title="💘💔 Hiệu ứng Cặp đôi Người tình!">
+        <Dialog title={`💘💔 ${t('game.elimination.loversEffect')}`}>
           <p>
-            {partner?.name} cũng bị loại vì là người tình của {player.name}.
+            {t('game.elimination.loverEliminated', {
+              partnerName: partner?.name ?? '',
+              playerName: player.name,
+            })}
           </p>
           <button class="btn btn-primary" onClick={advance}>
-            Tiếp tục
+            {t('game.elimination.continue')}
           </button>
         </Dialog>
       )}
       {phase.step === 'revenge' && (
-        <Dialog title="⚔️ Kẻ báo thù">
-          <p>{player.name} có thể chọn một người chơi bị loại cùng mình.</p>
+        <Dialog title={`⚔️ ${t('game.elimination.avengerRole')}`}>
+          <p>
+            {t('game.elimination.revengeInstructions', { name: player.name })}
+          </p>
           <PlayerGrid
             players={revengeTargets(game, phase)}
-            status={() => '⚔️ Chọn loại'}
+            status={() => `⚔️ ${t('game.elimination.chooseElimination')}`}
             choose={(targetId) => send({ type: 'REVENGE', targetId })}
           />
         </Dialog>

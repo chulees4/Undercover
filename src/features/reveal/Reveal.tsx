@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 import { useEffect, useState } from 'preact/hooks';
 import type { Command } from '../../app/game-controller';
 import { AVATAR_LIST } from '../../game/data/avatars';
@@ -42,15 +43,21 @@ export function Reveal({
   if (phase.step === 'privacy') {
     return (
       <section class="glass-card center-stage">
-        <CardTitle centered title={`Phát từ bí mật • ${player.seat} / ${game.players.length}`} />
-        <p>Đưa điện thoại cho</p>
+        <CardTitle
+          centered
+          title={t('game.reveal.dealSecretWordProgress', {
+            value1: player.seat,
+            value2: game.players.length,
+          })}
+        />
+        <p>{t('game.reveal.handPhoneTo')}</p>
         <PlayerBadge player={player} />
-        <p>Đảm bảo không có ai xung quanh đang nhìn vào màn hình của bạn!</p>
+        <p>{t('game.reveal.ensureNoOneCanSeeScreen')}</p>
         <button
-        class="btn btn-primary"
+          class="btn btn-primary"
           onClick={() => send({ type: 'OPEN_CARD' })}
         >
-          Sẵn sàng
+          {t('game.reveal.ready')}
         </button>
       </section>
     );
@@ -58,10 +65,16 @@ export function Reveal({
 
   return (
     <section class={`glass-card center-stage ${styles.reveal}`}>
-      <CardTitle centered title={`Người chơi #${player.seat} / ${game.players.length}`} />
+      <CardTitle
+        centered
+        title={t('game.reveal.playerProgress', {
+          value1: player.seat,
+          value2: game.players.length,
+        })}
+      />
       <PlayerBadge player={player} showName={false} />
       <div class={styles.profile}>
-        <label for="playerNameInput">Nhập tên của bạn:</label>
+        <label for="playerNameInput">{t('game.reveal.enterYourName')}</label>
         <input
           class="input-field"
           id="playerNameInput"
@@ -70,7 +83,7 @@ export function Reveal({
           value={name}
           onInput={(event) => setName(event.currentTarget.value)}
         />
-        <span id="playerAvatarLabel">Chọn biểu tượng:</span>
+        <span id="playerAvatarLabel">{t('game.reveal.chooseAvatar')}</span>
         <div
           class="avatar-picker"
           role="group"
@@ -80,7 +93,9 @@ export function Reveal({
             <button
               key={avatar}
               class="avatar-opt"
-              aria-label={`Chọn biểu tượng ${avatar}`}
+              aria-label={t('game.reveal.chooseAvatarLabel', {
+                avatar: avatar,
+              })}
               aria-pressed={player.avatar === avatar}
               disabled={game.players.some(
                 (other) => other.wordLocked && other.avatar === avatar,
@@ -95,7 +110,7 @@ export function Reveal({
       <button
         type="button"
         class={`hold-card ${styles.hold} ${holding ? 'holding' : ''} ${holding && player.role === 'MR_WHITE' ? 'mrwhite-reveal' : ''}`}
-        aria-label="Nhấn giữ để xem từ bí mật"
+        aria-label={t('game.reveal.holdToSeeSecretWordLabel')}
         onPointerDown={(event) => {
           if (event.button !== 0 || !event.isPrimary) return;
           show();
@@ -121,38 +136,44 @@ export function Reveal({
           <span data-testid="secret-word">
             {player.role === 'MR_WHITE' ? (
               <>
-                <strong class="secret-word-text">Bạn là Mũ Trắng</strong>
-                <span>
-                  Bạn không có từ khóa! Hãy lắng nghe và đoán từ của Dân thường.
-                </span>
+                <strong class="secret-word-text">
+                  {t('game.reveal.youAreMrWhite')}
+                </strong>
+                <span>{t('game.reveal.mrWhiteListenAndGuess')}</span>
               </>
             ) : (
               <>
-                <span>TỪ KHÓA CỦA BẠN</span>
+                <span>{t('game.reveal.yourSecretWord')}</span>
                 <strong class="secret-word-text">{player.assignedWord}</strong>
               </>
             )}
             {player.specialRoles.includes('JUSTICE') && (
-              <span>⚖️ Nữ thần Công lý</span>
+              <span>{`⚖️ ${t('game.reveal.justiceRole')}`}</span>
             )}
             {player.specialRoles.includes('LOVER') && (
               <span>
-                💘 Người tình của{' '}
-                {game.players.find(({ id }) => id === player.loverId)?.name}
+                {`💘 ${t('game.reveal.lover', {
+                  name:
+                    game.players.find(({ id }) => id === player.loverId)
+                      ?.name ?? '',
+                })}`}
               </span>
             )}
             {player.specialRoles.includes('AVENGER') && (
-              <span>⚔️ Kẻ báo thù</span>
+              <span>{`⚔️ ${t('game.reveal.avengerRole')}`}</span>
             )}
           </span>
         ) : (
           <>
             <span class="hold-icon">🔒</span>
-            <strong>NHẤN GIỮ ĐỂ XEM TỪ BÍ MẬT</strong>
+            <strong>{t('game.reveal.holdToSeeSecretWordPrompt')}</strong>
           </>
         )}
       </button>
-      <div class="dist-progress" aria-label="Tiến độ phát từ">
+      <div
+        class="dist-progress"
+        aria-label={t('game.reveal.secretWordDistributionProgress')}
+      >
         {game.players.map(({ id, seat, wordLocked }) => (
           <span
             key={id}
@@ -171,7 +192,11 @@ export function Reveal({
           send({ type: 'LOCK_WORD' });
         }}
       >
-        {!seen ? 'Cần xem từ bí mật' : last ? 'Bắt đầu vòng 1' : 'Chuyển người tiếp theo'}
+        {!seen
+          ? t('game.reveal.mustViewSecretWord')
+          : last
+            ? t('game.reveal.startRoundOne')
+            : t('game.reveal.passToNextPlayer')}
       </button>
     </section>
   );

@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 import { useEffect, useRef } from 'preact/hooks';
 import type { Command } from '../../app/game-controller';
 import { roleEmoji, roleLabelVN } from '../../game/data/avatars';
@@ -21,16 +22,16 @@ export function Results({
   const white = game.players.find(({ id }) => id === phase.winningMrWhiteId);
   const title =
     phase.winner === 'CIVILIANS'
-      ? '👨‍🌾 PHE DÂN THƯỜNG CHIẾN THẮNG!'
+      ? `👨‍🌾 ${t('game.results.civiliansWin')}`
       : phase.winner === 'IMPOSTORS'
-        ? '🕵️ PHE ẨN DANH CHIẾN THẮNG!'
-        : '🎩 MŨ TRẮNG LẬT KÈO THẮNG LỚN!';
+        ? `🕵️ ${t('game.results.impostorsWin')}`
+        : `🎩 ${t('game.results.mrWhiteWinsByGuess')}`;
   const subtitle =
     phase.winner === 'CIVILIANS'
-      ? 'Toàn bộ Gián điệp & Mũ Trắng đã bị vạch trần.'
+      ? t('game.results.allImpostorsRevealed')
       : phase.winner === 'IMPOSTORS'
-        ? 'Gián điệp / Mũ Trắng đã ẩn mình thành công đến phút chót.'
-        : `${white?.name} đã đoán chính xác từ khóa của Dân thường (+8 điểm)!`;
+        ? t('game.results.impostorsSurvived')
+        : t('game.results.whiteGuessWinner', { name: white?.name ?? '' });
   return (
     <>
       <canvas id="confettiCanvas" ref={canvas} aria-hidden="true" />
@@ -39,16 +40,16 @@ export function Results({
         <p>{subtitle}</p>
         <div class="word-reveal-pair">
           <div class="word-box civ">
-            <span>Từ Dân thường</span>
+            <span>{t('game.results.civilianWord')}</span>
             <strong>{game.pair.word_civilian}</strong>
           </div>
           <div class="word-box und">
-            <span>Từ Gián điệp</span>
+            <span>{t('game.results.undercoverWord')}</span>
             <strong>{game.pair.word_undercover}</strong>
           </div>
         </div>
       </section>
-      <Section title="🏆 Bảng xếp hạng & Vai trò ván này">
+      <Section title={`🏆 ${t('game.results.roundLeaderboard')}`}>
         <div class="score-list">
           {[...game.players]
             .sort((left, right) => right.totalScore - left.totalScore)
@@ -71,12 +72,16 @@ export function Results({
                 </strong>
                 <span class={`role-chip ${player.role}`}>
                   {roleEmoji(player.role)} {roleLabelVN(player.role)}
-                  {!player.isAlive && ' • Đã loại'}
+                  {!player.isAlive && ` • ${t('game.results.eliminated')}`}
                 </span>
                 <span>
-                  {player.totalScore} đ{' '}
+                  {player.totalScore} {t('game.results.pointsUnit')}{' '}
                   {player.lastPointsEarned > 0 && (
-                    <strong>+{player.lastPointsEarned} đ</strong>
+                    <strong>
+                      {t('game.results.pointsEarned', {
+                        count: player.lastPointsEarned,
+                      })}
+                    </strong>
                   )}
                 </span>
               </div>
@@ -88,13 +93,13 @@ export function Results({
           class="btn btn-secondary"
           onClick={() => send({ type: 'RESET' })}
         >
-          ⚙️ Cài đặt / Sửa
+          {`⚙️ ${t('game.results.setupOrEdit')}`}
         </button>
         <button
           class="btn btn-primary"
           onClick={() => send({ type: 'REPLAY' })}
         >
-          🔄 Chơi ván tiếp
+          {`🔄 ${t('game.results.playNextGame')}`}
         </button>
       </div>
     </>

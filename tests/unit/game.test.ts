@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { t } from '../../src/i18n';
 import { AVATAR_LIST } from '../../src/game/data/avatars';
 import {
   DEFAULT_CONFIG,
@@ -150,7 +151,9 @@ describe('game setup and reveal', () => {
 
     expect(gameOf(state).players[1].avatar).toBe(first);
     state = apply(state, { type: 'OPEN_CARD' });
-    expect(reduce(state, { type: 'EDIT_PLAYER', avatar: second }).ok).toBe(false);
+    expect(reduce(state, { type: 'EDIT_PLAYER', avatar: second }).ok).toBe(
+      false,
+    );
 
     state = apply(state, { type: 'LOCK_WORD', random: seeded() });
     expect(gameOf(state).players[2].avatar).toBe(third);
@@ -180,6 +183,15 @@ describe('game setup and reveal', () => {
     );
     expect(gameOf(unused).pair).toBe(other);
   });
+});
+
+it('uses the Vietnamese locale for generated player names', () => {
+  const game = gameOf(start());
+  expect(game.players.map((player) => player.name)).toEqual(
+    game.players.map((_, index) =>
+      t('game.players.defaultName', { value1: index + 1 }),
+    ),
+  );
 });
 
 describe('voting', () => {

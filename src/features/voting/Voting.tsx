@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 import { useState } from 'preact/hooks';
 import type { Command } from '../../app/game-controller';
 import type { Game, Phase } from '../../game/model';
@@ -9,7 +10,12 @@ import {
   tiedLeaders,
 } from '../../game/reducer';
 import { living } from '../../game/rules';
-import { CardTitle, Dialog, PlayerBadge, PlayerGrid } from '../../shared/components';
+import {
+  CardTitle,
+  Dialog,
+  PlayerBadge,
+  PlayerGrid,
+} from '../../shared/components';
 import styles from './Voting.module.css';
 
 type VotePhase = Extract<Phase, { type: 'offline-vote' | 'secret-vote' }>;
@@ -29,13 +35,19 @@ export function Voting({
     const selected = alive.find(({ id }) => id === phase.selectedId);
     return (
       <section class="glass-card voting-stage">
-        <CardTitle title={`🗳️ Vòng ${game.roundNumber} • Bỏ phiếu ngoài đời`} />
-        <p>Thảo luận, giơ tay và chạm vào người nhận nhiều phiếu nhất.</p>
+        <CardTitle
+          title={`🗳️ ${t('game.voting.roundPublicVoting', {
+            value1: game.roundNumber,
+          })}`}
+        />
+        <p>{t('game.voting.discussAndSelectMostVoted')}</p>
         <PlayerGrid
           players={alive}
           selectedId={phase.selectedId}
           status={({ id }) =>
-            id === phase.selectedId ? '🎯 Đang chọn loại' : 'Chạm để chọn'
+            id === phase.selectedId
+              ? `🎯 ${t('game.voting.selectedForElimination')}`
+              : t('game.voting.tapToSelect')
           }
           choose={(id) => send({ type: 'SELECT_OFFLINE', id })}
         />
@@ -44,34 +56,36 @@ export function Voting({
             class="btn btn-secondary"
             onClick={() => send({ type: 'BACK_TO_DISCUSSION' })}
           >
-            ← Mô tả lại
+            {`← ${t('game.voting.returnToDescription')}`}
           </button>
           <button
             class="btn btn-danger"
             disabled={!selected}
             onClick={() => setConfirm(true)}
           >
-            💀 Loại người này
+            {`💀 ${t('game.voting.eliminateThisPlayer')}`}
           </button>
         </div>
         {confirm && selected && (
           <Dialog
-            title={`💀 Loại ${selected.name}?`}
+            title={`💀 ${t('game.voting.eliminatePlayerName', {
+              value1: selected.name,
+            })}`}
             close={() => setConfirm(false)}
           >
-            <p>Vai trò của người chơi sẽ được lật cho cả nhóm xem.</p>
+            <p>{t('game.voting.playerRoleWillBeRevealed')}</p>
             <div class="modal-actions">
               <button
                 class="btn btn-secondary"
                 onClick={() => setConfirm(false)}
               >
-                Hủy
+                {t('game.voting.cancel')}
               </button>
               <button
                 class="btn btn-danger"
                 onClick={() => send({ type: 'CONFIRM_OFFLINE' })}
               >
-                💀 Loại ngay
+                {`💀 ${t('game.voting.eliminateNow')}`}
               </button>
             </div>
           </Dialog>
@@ -92,23 +106,31 @@ export function Voting({
       ) + Object.keys(phase.votes).length;
     return phase.step === 'privacy' ? (
       <section class="glass-card center-stage">
-        <CardTitle centered title={`🔒 Bỏ phiếu kín • ${ballotCount + 1}/${alive.length}`} />
-        <p>Chuyền máy cho</p>
+        <CardTitle
+          centered
+          title={`🔒 ${t('game.voting.secretVotingProgress', {
+            value1: ballotCount + 1,
+            value2: alive.length,
+          })}`}
+        />
+        <p>{t('game.voting.passDeviceTo')}</p>
         <PlayerBadge player={voter} />
         <button
           class="btn btn-primary"
           onClick={() => send({ type: 'OPEN_BALLOT' })}
         >
-          🗳️ Mở phiếu bầu của tôi
+          {`🗳️ ${t('game.voting.revealMyBallot')}`}
         </button>
       </section>
     ) : (
       <section class="glass-card voting-stage">
-        <CardTitle title={`🔒 Phiếu của ${voter.name}`} />
-        <p>Chạm vào người bạn muốn bỏ phiếu loại (phiếu bầu được giữ kín):</p>
+        <CardTitle
+          title={`🔒 ${t('game.voting.ballotOfPlayer', { value1: voter.name })}`}
+        />
+        <p>{t('game.voting.tapToVoteForElimination')}</p>
         <PlayerGrid
           players={alive.filter(({ id }) => candidates.includes(id))}
-          status={() => 'Bỏ phiếu loại'}
+          status={() => t('game.voting.voteToEliminate')}
           choose={(id) =>
             send({ type: 'CAST_VOTE', voterId: voter.id, targetId: id })
           }
@@ -122,7 +144,7 @@ export function Voting({
   const justice = justicePlayer(game);
   return (
     <section class="glass-card voting-stage">
-      <CardTitle title="📊 Kết quả bỏ phiếu kín" />
+      <CardTitle title={`📊 ${t('game.voting.secretVotingResults')}`} />
       <div class={styles.tally}>
         {tally(phase).map(({ id, count }) => {
           const player = alive.find((candidate) => candidate.id === id);
@@ -137,7 +159,7 @@ export function Voting({
                   style={{ width: `${(count / alive.length) * 100}%` }}
                 />
               </div>
-              <strong>{count} phiếu</strong>
+              <strong>{t('game.voting.voteCount', { count: count })}</strong>
             </div>
           );
         })}
@@ -147,34 +169,32 @@ export function Voting({
           class="btn btn-danger"
           onClick={() => send({ type: 'RESOLVE_VOTES' })}
         >
-          🃏 Lật vai trò &amp; Loại {leadingPlayer.name}
+          {`🃏 ${t('game.voting.revealAndEliminate', { name: leadingPlayer.name })}`}
         </button>
       ) : justice ? (
         <>
-          <p>
-            ⚖️ {justice.name} là Nữ thần Công lý. Chọn một người trong nhóm hòa.
-          </p>
+          <p>{`⚖️ ${t('game.voting.justiceInstructions', { name: justice.name })}`}</p>
           <PlayerGrid
             players={alive.filter(({ id }) => leaders.includes(id))}
-            status={() => 'Chọn loại'}
+            status={() => t('game.voting.chooseElimination')}
             choose={(targetId) => send({ type: 'RESOLVE_VOTES', targetId })}
           />
         </>
       ) : (
         <>
-          <p>Hòa phiếu. Bầu lại trong nhóm hòa hoặc bỏ qua vòng này.</p>
+          <p>{t('game.voting.tiedVoteOptions')}</p>
           <div class={styles.actions}>
             <button
               class="btn btn-primary"
               onClick={() => send({ type: 'REVOTE' })}
             >
-              🔄 Bầu lại nhóm hòa
+              {`🔄 ${t('game.voting.revoteTiedPlayers')}`}
             </button>
             <button
               class="btn btn-secondary"
               onClick={() => send({ type: 'SKIP_TIE' })}
             >
-              ⏭️ Bỏ qua vòng này
+              {`⏭️ ${t('game.voting.skipThisRound')}`}
             </button>
           </div>
         </>

@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 import type { ComponentChildren } from 'preact';
 import type { Command } from '../../app/game-controller';
 import { CATEGORIES } from '../../game/data/words';
@@ -35,7 +36,7 @@ function Stepper({
       <div class="stepper-ctrl">
         <button
           class="step-btn"
-          aria-label={`Giảm ${label}`}
+          aria-label={t('game.setup.decreaseLabel', { label: label })}
           disabled={value <= min}
           onClick={() => change(value - 1)}
         >
@@ -44,7 +45,7 @@ function Stepper({
         <span class="step-val">{value}</span>
         <button
           class="step-btn"
-          aria-label={`Tăng ${label}`}
+          aria-label={t('game.setup.increaseLabel', { label: label })}
           disabled={value >= max}
           onClick={() => change(value + 1)}
         >
@@ -139,10 +140,16 @@ export function Setup({
   const counts: ComponentChildren = (
     <div class="role-summary-bar">
       <span class="role-pill civ">
-        👨‍🌾 {playerCount - undercoverCount - mrWhiteCount} Dân thường
+        {`👨‍🌾 ${t('game.setup.civilianCount', {
+          count: playerCount - undercoverCount - mrWhiteCount,
+        })}`}
       </span>
-      <span class="role-pill und">🕵️ {undercoverCount} Gián điệp</span>
-      <span class="role-pill mrw">🎩 {mrWhiteCount} Mũ Trắng</span>
+      <span class="role-pill und">
+        {`🕵️ ${t('game.setup.undercoverCount', { count: undercoverCount })}`}
+      </span>
+      <span class="role-pill mrw">
+        {`🎩 ${t('game.setup.whiteCount', { count: mrWhiteCount })}`}
+      </span>
     </div>
   );
 
@@ -151,20 +158,23 @@ export function Setup({
       {game && (
         <div class="resume-banner">
           <div class="resume-status">
-            <strong>⚡ Đang chơi dở!</strong>
+            <strong>{`⚡ ${t('game.setup.gameInProgress')}`}</strong>
             <div class="marquee">
               <span>
-                Vòng {game.roundNumber} · {game.players.length} người chơi
+                {t('game.setup.savedGameSummary', {
+                  round: game.roundNumber,
+                  count: game.players.length,
+                })}
               </span>
             </div>
           </div>
           <div class={styles.actions}>
             <button class="btn btn-primary" onClick={resume}>
-              Tiếp tục
+              {t('game.setup.resume')}
             </button>
             <button
-                class="icon-btn btn-danger"
-              aria-label="Bỏ ván đã lưu"
+              class="icon-btn btn-danger"
+              aria-label={t('game.setup.discardSavedGame')}
               onClick={discard}
             >
               x
@@ -173,18 +183,18 @@ export function Setup({
         </div>
       )}
       <Section
-        title="👥 Người chơi & Phân bổ vai trò"
+        title={`👥 ${t('game.setup.playersAndRoles')}`}
         action={
           profiles.length > 0 && (
             <button class="btn btn-sm btn-danger" onClick={clearProfiles}>
-              🔄 Xóa điểm
+              {`🔄 ${t('game.setup.clearScores')}`}
             </button>
           )
         }
       >
         <Stepper
-          label="Tổng người chơi"
-          details="3–20 người"
+          label={t('game.setup.playerCount')}
+          details={t('game.setup.playerCountRange')}
           value={playerCount}
           min={3}
           max={20}
@@ -196,16 +206,16 @@ export function Setup({
           }
         />
         <Stepper
-          label="🕵️ Gián điệp"
-          details="Undercover"
+          label={`🕵️ ${t('game.setup.undercoverCountLabel')}`}
+          details={t('game.setup.undercover')}
           value={undercoverCount}
           min={mrWhiteCount ? 0 : 1}
           max={maxImpostors - mrWhiteCount}
           change={(count) => set({ undercoverCount: count })}
         />
         <Stepper
-          label="🎩 Mũ Trắng"
-          details="Mr. White"
+          label={`🎩 ${t('game.setup.mrWhiteCountLabel')}`}
+          details={t('game.setup.mrWhite')}
           value={mrWhiteCount}
           min={undercoverCount ? 0 : 1}
           max={maxImpostors - undercoverCount}
@@ -213,37 +223,37 @@ export function Setup({
         />
         {counts}
       </Section>
-      <Section title="✨ Vai trò mở rộng">
+      <Section title={`✨ ${t('game.setup.specialRoles')}`}>
         <Toggle
-          label="⚖️ Nữ thần Công lý"
-          details="Một Dân thường quyết định khi bỏ phiếu kín hòa."
+          label={`⚖️ ${t('game.setup.justiceRole')}`}
+          details={t('game.setup.justiceTieBreakDescription')}
           active={config.justiceEnabled}
           change={(justiceEnabled) => set({ justiceEnabled })}
         />
         <Toggle
-          label="💘 Cặp đôi Người tình"
-          details="Hai người cùng bị loại nếu một người rời cuộc chơi."
+          label={`💘 ${t('game.setup.loversRole')}`}
+          details={t('game.setup.loversEliminationDescription')}
           active={config.loversEnabled}
           disabled={playerCount < 4}
           change={(loversEnabled) => set({ loversEnabled })}
         />
         <Toggle
-          label="⚔️ Kẻ báo thù"
-          details="Chọn một người còn sống bị loại cùng mình."
+          label={`⚔️ ${t('game.setup.avengerRole')}`}
+          details={t('game.setup.chooseLivingEliminationTarget')}
           active={config.avengerEnabled}
           change={(avengerEnabled) => set({ avengerEnabled })}
         />
       </Section>
       <Section
-        title="📚 Chủ đề từ khóa"
+        title={`📚 ${t('game.setup.wordCategories')}`}
         action={
           <button class="btn btn-sm" onClick={manageWords}>
-            ✍️ Quản lý từ tự tạo
+            {`✍️ ${t('game.setup.manageCustomWords')}`}
           </button>
         }
       >
         <div class="cat-grid">
-          {CATEGORIES.map(({ id, name, emoji }) => {
+          {CATEGORIES.map(({ id, labelKey, emoji }) => {
             const selected = config.categories.includes(id);
             const count = wordPool(state, {
               ...config,
@@ -265,44 +275,42 @@ export function Setup({
               >
                 <span class="emoji">{emoji}</span>
                 <span class="meta">
-                  <span class="name">{name}</span>
-                  <span class="count">{count} cặp từ</span>
+                  <span class="name">{t(`game.categories.${labelKey}`)}</span>
+                  <span class="count">
+                    {t('game.setup.wordCount', { count: count })}
+                  </span>
                 </span>
               </button>
             );
           })}
         </div>
       </Section>
-      <Section title="⚙️ Cài đặt ván chơi">
-        <h3>⏱️ Thời gian mô tả</h3>
+      <Section title={`⚙️ ${t('game.setup.gameSettings')}`}>
+        <h3>{`⏱️ ${t('game.setup.descriptionTimer')}`}</h3>
         <Segment<Config['timerSeconds']>
           value={config.timerSeconds}
           change={(timerSeconds) => set({ timerSeconds })}
           options={[
-            { value: 0, label: 'Tắt' },
-            { value: 30, label: '30 giây' },
-            { value: 45, label: '45 giây' },
+            { value: 0, label: t('game.setup.off') },
+            { value: 30, label: t('game.setup.thirtySeconds') },
+            { value: 45, label: t('game.setup.fortyFiveSeconds') },
           ]}
         />
-        <h3>🗳️ Cách bỏ phiếu</h3>
+        <h3>{`🗳️ ${t('game.setup.votingMethod')}`}</h3>
         <Segment
           value={config.votingMode}
           change={(votingMode) => set({ votingMode })}
           options={[
-            { value: 'offline', label: '✋ Ngoài đời' },
-            { value: 'secret', label: '🔒 Bỏ phiếu kín' },
+            { value: 'offline', label: `✋ ${t('game.setup.publicVoting')}` },
+            { value: 'secret', label: `🔒 ${t('game.setup.secretVoting')}` },
           ]}
         />
       </Section>
       {!wordCount && (
-        <p role="status">Chọn một chủ đề có từ khóa để bắt đầu.</p>
+        <p role="status">{t('game.setup.selectCategoryWithWords')}</p>
       )}
-      <button
-        class="btn btn-primary"
-        disabled={!wordCount}
-        onClick={start}
-      >
-        🚀 Bắt đầu ván chơi
+      <button class="btn btn-primary" disabled={!wordCount} onClick={start}>
+        {`🚀 ${t('game.setup.startGame')}`}
       </button>
     </div>
   );

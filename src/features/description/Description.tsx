@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 import type { JSX } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import type { Command } from '../../app/game-controller';
@@ -35,8 +36,14 @@ function Timer({
   return (
     <div class="description-timer">
       <span class={`timer-digits ${remaining <= 5 ? 'danger' : ''}`}>
-        {remaining > 0 && <span role="timer">{remaining} giây</span>}
-        <span role="status">{remaining === 0 ? 'Hết thời gian!' : ''}</span>
+        {remaining > 0 && (
+          <span role="timer">
+            {t('game.description.secondsRemaining', { count: remaining })}
+          </span>
+        )}
+        <span role="status">
+          {remaining === 0 ? t('game.description.timeUp') : ''}
+        </span>
       </span>
       <div class="timer-actions">
         <button
@@ -53,10 +60,10 @@ function Timer({
           }}
         >
           {deadline !== null
-            ? '⏸ Tạm dừng'
+            ? `⏸ ${t('game.description.pause')}`
             : hasStarted && remaining > 0
-              ? '▶ Tiếp tục'
-              : '▶ Bắt đầu'}
+              ? `▶ ${t('game.description.resume')}`
+              : `▶ ${t('game.description.start')}`}
         </button>
         {hasStarted && remaining > 0 && (
           <button
@@ -67,7 +74,7 @@ function Timer({
               setRemaining(seconds);
             }}
           >
-            Đặt lại
+            {t('game.description.reset')}
           </button>
         )}
         {nextPlayerButton}
@@ -95,16 +102,20 @@ export function Description({
       class="btn btn-secondary"
       onClick={() => send({ type: 'NEXT_SPEAKER' })}
     >
-      ⏭️ Người tiếp theo
+      {`⏭️ ${t('game.description.nextPlayer')}`}
     </button>
   );
   return (
     <section class="glass-card">
-      <CardTitle title={`💬 Vòng ${game.roundNumber} • Mô tả từ khóa`} />
+      <CardTitle
+        title={`💬 ${t('game.description.roundClueDescription', {
+          value1: game.roundNumber,
+        })}`}
+      />
       <div class="center-stage">
         <div class="description-turn">
           <div>
-            <p>Đến lượt mô tả của</p>
+            <p>{t('game.description.descriptionTurnFor')}</p>
             {speaker && <PlayerBadge player={speaker} />}
           </div>
           {game.config.timerSeconds > 0 && (
@@ -121,10 +132,12 @@ export function Description({
           activeId={speaker?.id}
           status={(player) =>
             !player.isAlive
-              ? `💀 Đã loại (${roleLabelShort(player.role)})`
+              ? `💀 ${t('game.description.eliminatedRole', {
+                  value1: roleLabelShort(player.role),
+                })}`
               : player.id === speaker?.id
-                ? 'Đang mô tả'
-                : 'Đang chờ'
+                ? t('game.description.describing')
+                : t('game.description.waiting')
           }
         />
         <div class="btn-row description-actions">
@@ -133,7 +146,7 @@ export function Description({
             class="btn btn-primary"
             onClick={() => send({ type: 'START_VOTE' })}
           >
-            🗳️ Bắt đầu bỏ phiếu
+            {`🗳️ ${t('game.description.startVoting')}`}
           </button>
         </div>
       </div>

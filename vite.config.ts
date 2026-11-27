@@ -1,26 +1,29 @@
 import preact from '@preact/preset-vite';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { locale } from './src/i18n/config.ts';
+import { localizeHtml } from './src/i18n/html.ts';
+import { vi } from './src/i18n/locales/vi.ts';
 
 export default defineConfig({
   base: process.env.UNDERCOVER_BASE ?? './',
   plugins: [
+    { name: 'app-locale-html', transformIndexHtml: localizeHtml },
     preact(),
     VitePWA({
       registerType: 'prompt',
       injectRegister: null,
       manifest: {
-        name: 'Undercover – Gián Điệp Ẩn Danh',
-        short_name: 'Undercover',
-        description:
-          'Board game suy luận xã hội Pass & Play 100% tiếng Việt, chơi offline cùng bạn bè trên một thiết bị.',
+        name: vi.app.metadata.name,
+        short_name: vi.app.metadata.shortName,
+        description: vi.app.metadata.description,
         start_url: './index.html',
         scope: './',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#081120',
         theme_color: '#081120',
-        lang: 'vi',
+        lang: locale,
         categories: ['games', 'entertainment'],
         icons: [
           {

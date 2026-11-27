@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 import { useState } from 'preact/hooks';
 import type { Command } from '../../app/game-controller';
 import type { WordPair } from '../../game/model';
@@ -18,7 +19,7 @@ export function CustomWords({
   const [synonyms, setSynonyms] = useState('');
   const [notice, setNotice] = useState('');
   return (
-    <Dialog title="✍️ Quản lý từ tự tạo" close={close}>
+    <Dialog title={`✍️ ${t('game.customWords.customWordsTitle')}`} close={close}>
       <form
         class={styles.form}
         onSubmit={(event) => {
@@ -41,27 +42,29 @@ export function CustomWords({
             setCivilian('');
             setUndercover('');
             setSynonyms('');
-            setNotice('Đã thêm cặp từ.');
+            setNotice(t('game.customWords.wordPairAdded'));
           } else {
-            setNotice('Nhập hai từ khóa khác nhau.');
+            setNotice(t('game.customWords.enterTwoDifferentWords'));
           }
         }}
       >
-        <label for="cwCiv">Từ Dân thường</label>
+        <label for="cwCiv">{t('game.customWords.civilianWord')}</label>
         <input
           class="input-field"
           id="cwCiv"
           value={civilian}
           onInput={(event) => setCivilian(event.currentTarget.value)}
         />
-        <label for="cwUnd">Từ Gián điệp</label>
+        <label for="cwUnd">{t('game.customWords.undercoverWord')}</label>
         <input
           class="input-field"
           id="cwUnd"
           value={undercover}
           onInput={(event) => setUndercover(event.currentTarget.value)}
         />
-        <label for="cwSyn">Từ đồng nghĩa (cách nhau bằng dấu phẩy)</label>
+        <label for="cwSyn">
+          {t('game.customWords.commaSeparatedSynonyms')}
+        </label>
         <input
           class="input-field"
           id="cwSyn"
@@ -69,11 +72,11 @@ export function CustomWords({
           onInput={(event) => setSynonyms(event.currentTarget.value)}
         />
         <button class="btn btn-primary" type="submit">
-          + Thêm cặp từ
+          {`+ ${t('game.customWords.addWordPair')}`}
         </button>
       </form>
       <p role="status">{notice}</p>
-      <h3>{words.length} cặp từ tự tạo</h3>
+      <h3>{t('game.customWords.wordCount', { count: words.length })}</h3>
       <ul class={styles.list}>
         {words.map((word) => (
           <li key={word.id}>
@@ -87,7 +90,10 @@ export function CustomWords({
             </div>
             <button
               class="icon-btn"
-              aria-label={`Xóa cặp từ ${word.word_civilian} và ${word.word_undercover}`}
+              aria-label={t('game.customWords.removeWordPair', {
+                value1: word.word_civilian,
+                value2: word.word_undercover,
+              })}
               onClick={() => send({ type: 'DELETE_WORD', id: word.id })}
             >
               🗑️

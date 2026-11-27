@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { AVATAR_LIST } from './data/avatars';
 import { BUILT_IN_WORDS } from './data/words';
 import type {
@@ -36,7 +37,9 @@ export function prepareRevealAvatar(game: Game, useDefault = false): Game {
   const { index } = game.phase;
   const player = game.players[index];
   const usedAvatars = new Set(
-    game.players.filter((other) => other.wordLocked).map((other) => other.avatar),
+    game.players
+      .filter((other) => other.wordLocked)
+      .map((other) => other.avatar),
   );
   if ((!useDefault || player.namedByUser) && !usedAvatars.has(player.avatar))
     return game;
@@ -92,7 +95,8 @@ export function newGame(
     return {
       id: `p_${index + 1}`,
       seat: index + 1,
-      name: profile?.name || `Người chơi ${index + 1}`,
+      name:
+        profile?.name || t('game.players.defaultName', { value1: index + 1 }),
       namedByUser: profile?.namedByUser ?? false,
       avatar: profile?.avatar || AVATAR_LIST[index % AVATAR_LIST.length],
       role,

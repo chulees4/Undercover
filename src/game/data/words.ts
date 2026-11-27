@@ -3,13 +3,13 @@
  */
 
 export const CATEGORIES = [
-  { id: 'common', name: 'Phổ thông', emoji: '🌟' },
-  { id: 'food', name: 'Ẩm thực VN', emoji: '🍜' },
-  { id: 'travel', name: 'Địa danh & Du lịch', emoji: '✈️' },
-  { id: 'entertainment', name: 'Phim & Giải trí', emoji: '🎬' },
-  { id: 'tech_life', name: 'Công nghệ & Đời sống', emoji: '📱' },
-  { id: 'custom', name: 'Bộ từ tự tạo', emoji: '✍️' },
-];
+  { id: 'common', labelKey: 'common', emoji: '🌟' },
+  { id: 'food', labelKey: 'food', emoji: '🍜' },
+  { id: 'travel', labelKey: 'travel', emoji: '✈️' },
+  { id: 'entertainment', labelKey: 'entertainment', emoji: '🎬' },
+  { id: 'tech_life', labelKey: 'techLife', emoji: '📱' },
+  { id: 'custom', labelKey: 'custom', emoji: '✍️' },
+] as const;
 
 import type { WordPair } from '../model';
 

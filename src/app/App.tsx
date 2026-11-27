@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { useEffect, useState } from 'preact/hooks';
 import { CustomWords } from '../features/custom-words/CustomWords';
 import { Description } from '../features/description/Description';
@@ -15,46 +16,41 @@ type Modal = 'rules' | 'words' | 'home' | 'scores' | 'discard' | 'start';
 
 function Rules({ close }: { close: () => void }) {
   return (
-    <Dialog title="📖 Luật chơi Undercover" close={close}>
-      <h3>Vai trò chính</h3>
+    <Dialog title={`📖 ${t('app.help.gameRulesTitle')}`} close={close}>
+      <h3>{t('app.help.mainRolesHeading')}</h3>
       <ul>
         <li>
-          👨‍🌾 <strong>Dân thường</strong> nhận cùng một từ khóa và tìm người giả
-          mạo.
+          👨‍🌾 <strong>{t('app.help.civilianRole')}</strong>{' '}
+          {t('app.help.civilianObjective')}
         </li>
         <li>
-          🕵️ <strong>Gián điệp</strong> nhận một từ tương tự và cố hòa vào nhóm.
+          🕵️ <strong>{t('app.help.undercoverRole')}</strong>{' '}
+          {t('app.help.undercoverObjective')}
         </li>
         <li>
-          🎩 <strong>Mũ Trắng</strong> không có từ khóa. Khi bị loại, họ có 20
-          giây để đoán từ của Dân thường.
+          🎩 <strong>{t('app.help.mrWhiteRole')}</strong>{' '}
+          {t('app.help.mrWhiteGuessRule')}
         </li>
       </ul>
-      <h3>Mỗi vòng chơi</h3>
-      <p>
-        Xem từ riêng, lần lượt mô tả mà không nói thẳng từ khóa, rồi bỏ phiếu
-        loại một người. Có thể giơ tay hoặc bỏ phiếu kín trên máy.
-      </p>
-      <h3>Vai trò mở rộng</h3>
+      <h3>{t('app.help.eachRoundHeading')}</h3>
+      <p>{t('app.help.roundInstructions')}</p>
+      <h3>{t('app.help.specialRolesHeading')}</h3>
       <ul>
         <li>
-          ⚖️ <strong>Nữ thần Công lý</strong> còn sống quyết định khi bỏ phiếu
-          kín hòa.
+          ⚖️ <strong>{t('app.help.justiceRole')}</strong>{' '}
+          {t('app.help.justiceBreaksTies')}
         </li>
         <li>
-          💘 <strong>Cặp đôi Người tình</strong> bị loại cùng nhau.
+          💘 <strong>{t('app.help.loversRole')}</strong>{' '}
+          {t('app.help.loversEliminatedTogether')}
         </li>
         <li>
-          ⚔️ <strong>Kẻ báo thù</strong> chọn một người khác bị loại cùng mình.
+          ⚔️ <strong>{t('app.help.avengerRole')}</strong>{' '}
+          {t('app.help.avengerEliminationChoice')}
         </li>
       </ul>
-      <h3>Thắng cuộc và tính điểm</h3>
-      <p>
-        Dân thường thắng khi loại hết Gián điệp và Mũ Trắng, mỗi người được 2
-        điểm. Phe ẩn danh thắng khi còn tối đa một Dân thường. Người ẩn danh
-        sống sót được 6 điểm, hoặc 10 điểm nếu chỉ còn một Gián điệp trong phe.
-        Mũ Trắng đoán đúng thắng ngay và được 8 điểm.
-      </p>
+      <h3>{t('app.help.winningAndScoringHeading')}</h3>
+      <p>{t('app.help.winningAndScoringRules')}</p>
     </Dialog>
   );
 }
@@ -189,15 +185,15 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
               🕵️
             </span>
             <div class="brand-text">
-              <h1>UNDERCOVER</h1>
-              <span>Gián Điệp Ẩn Danh</span>
+              <h1>{t('app.brand.undercover')}</h1>
+              <span>{t('app.brand.undercoverSubtitle')}</span>
             </div>
           </div>
           <div class="topbar-actions">
             {game && (
               <button
                 class="icon-btn"
-                aria-label="Về thiết lập"
+                aria-label={t('app.navigation.backToSetup')}
                 onClick={() => {
                   if (active) setModal('home');
                   else send({ type: 'RESET' });
@@ -208,7 +204,7 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
             )}
             <button
               class="icon-btn sound-toggle"
-              aria-label="Âm thanh"
+              aria-label={t('app.navigation.sound')}
               aria-pressed={sound}
               onClick={controller.toggleSound}
             >
@@ -216,7 +212,7 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
             </button>
             <button
               class="icon-btn"
-              aria-label="Luật chơi"
+              aria-label={t('app.navigation.gameRules')}
               onClick={() => setModal('rules')}
             >
               📖
@@ -231,24 +227,20 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
           )}
           {revealSession && backWarning && (
             <p class={styles.notice} role="status">
-              🔒 Không thể quay lại xem từ khóa của người chơi trước!
+              {`🔒 ${t('app.navigation.cannotReviewPreviousWord')}`}
             </p>
           )}
           {offlineReady && (
             <p class={styles.notice} role="status">
-              ✓ Đã sẵn sàng chơi ngoại tuyến.
+              {`✓ ${t('app.updates.offlineReady')}`}
             </p>
           )}
           {updateAvailable && (
             <div class={styles.update} role="status">
               <div>
-                <strong>Có phiên bản mới.</strong>
-                {active && (
-                  <div>
-                    Bạn có thể cập nhật sau khi kết thúc hoặc về thiết lập.
-                  </div>
-                )}
-                {updateError && <div>Chưa thể cập nhật. Hãy thử lại.</div>}
+                <strong>{t('app.updates.updateAvailable')}</strong>
+                {active && <div>{t('app.updates.updateLaterExplanation')}</div>}
+                {updateError && <div>{t('app.updates.updateFailed')}</div>}
               </div>
               <button
                 class="btn btn-secondary"
@@ -260,7 +252,7 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
                   void applyUpdate().catch(() => setUpdateError(true));
                 }}
               >
-                Cập nhật
+                {t('app.updates.update')}
               </button>
             </div>
           )}
@@ -272,14 +264,11 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
         <CustomWords close={close} words={state.customWords} send={send} />
       )}
       {modal === 'home' && (
-        <Dialog title="🏠 Về màn hình thiết lập?" close={close}>
-          <p>
-            Ván chơi được lưu tự động. Chọn Tiếp tục ở màn hình thiết lập để
-            quay lại.
-          </p>
+        <Dialog title={`🏠 ${t('app.dialogs.returnToSetupDialog')}`} close={close}>
+          <p>{t('app.dialogs.savedGameResumeExplanation')}</p>
           <div class="modal-actions">
             <button class="btn btn-secondary" onClick={close}>
-              Ở lại ván
+              {t('app.dialogs.stayInGame')}
             </button>
             <button
               class="btn btn-primary"
@@ -288,17 +277,20 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
                 close();
               }}
             >
-              Về thiết lập
+              {t('app.navigation.backToSetup')}
             </button>
           </div>
         </Dialog>
       )}
       {modal === 'scores' && (
-        <Dialog title="🔄 Xóa hồ sơ và điểm?" close={close}>
-          <p>Tên, biểu tượng và điểm đã lưu của người chơi sẽ bị xóa.</p>
+        <Dialog
+          title={`🔄 ${t('app.dialogs.clearProfilesAndScoresDialog')}`}
+          close={close}
+        >
+          <p>{t('app.dialogs.clearProfilesAndScoresExplanation')}</p>
           <div class="modal-actions">
             <button class="btn btn-secondary" onClick={close}>
-              Hủy
+              {t('app.dialogs.cancel')}
             </button>
             <button
               class="btn btn-danger"
@@ -307,19 +299,23 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
                 close();
               }}
             >
-              Xóa điểm
+              {t('app.dialogs.clearScores')}
             </button>
           </div>
         </Dialog>
       )}
       {(modal === 'discard' || modal === 'start') && (
         <Dialog
-          title={modal === 'start' ? 'Bỏ ván đã lưu và bắt đầu ván mới?' : 'Bỏ ván đã lưu?'}
+          title={
+            modal === 'start'
+              ? t('app.dialogs.discardSavedGameAndStart')
+              : t('app.dialogs.discardSavedGame')
+          }
           close={close}
         >
           <div class="modal-actions">
             <button class="btn btn-secondary" onClick={close}>
-              Hủy
+              {t('app.dialogs.cancel')}
             </button>
             <button
               class="btn btn-danger"
@@ -328,7 +324,9 @@ export function App({ controller, flip, tick }: ReturnType<typeof bootstrap>) {
                 close();
               }}
             >
-              {modal === 'start' ? 'Bỏ ván và bắt đầu' : 'Bỏ ván'}
+              {modal === 'start'
+                ? t('app.dialogs.discardGameAndStart')
+                : t('app.dialogs.discardGame')}
             </button>
           </div>
         </Dialog>

@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import type { ComponentChildren } from 'preact';
 import { useEffect, useRef } from 'preact/hooks';
 import type { Player } from '../game/model';
@@ -73,7 +74,7 @@ export function Dialog({
           <button
             type="button"
             class="icon-btn modal-close"
-            aria-label="Đóng"
+            aria-label={t('common.dialog.close')}
             onClick={close}
           >
             x

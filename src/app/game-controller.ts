@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { reduce, type Action } from '../game/reducer';
 import type { Random, State } from '../game/model';
 import { prepareRevealAvatar } from '../game/rules';
@@ -61,7 +62,7 @@ export function createGameController(
       }
     }
     notice = pendingWrites.size
-      ? 'Không thể lưu thay đổi trên thiết bị này.'
+      ? t('app.storage.cannotSaveChanges')
       : restoreNotice;
     return pendingWrites.size === 0;
   }

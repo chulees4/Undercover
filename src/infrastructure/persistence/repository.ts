@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 import {
   DEFAULT_CONFIG,
   type Config,
@@ -47,7 +48,7 @@ export function createRepository(storage: StoragePort) {
     try {
       return storage.getItem(storageKey);
     } catch {
-      notices.add('Không thể đọc dữ liệu đã lưu trên thiết bị này.');
+      notices.add(t('app.storage.cannotReadSavedData'));
       return null;
     }
   }
@@ -76,18 +77,14 @@ export function createRepository(storage: StoragePort) {
       )
         return envelope.data;
       preservedRecords.set(slot, current);
-      notices.add(
-        'Một số dữ liệu đã lưu không đọc được. Bản gốc được giữ lại.',
-      );
+      notices.add(t('app.storage.someSavedDataUnreadable'));
       return fallback;
     }
     const old = readRaw(key(slot, 1));
     if (old !== null) {
       const migrated = legacy(parse(old));
       if (validate(migrated)) return migrated;
-      notices.add(
-        'Một số dữ liệu cũ không khôi phục được. Bản gốc được giữ lại.',
-      );
+      notices.add(t('app.storage.someLegacyDataUnrestored'));
     }
     return fallback;
   }
