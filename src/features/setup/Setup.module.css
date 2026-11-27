@@ -1,0 +1,19 @@
+.setup {
+  display: grid;
+  gap: var(--space-4, 16px);
+}
+
+.setup h3 {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.actions > :global(.icon-btn) {
+  flex-shrink: 0;
+}

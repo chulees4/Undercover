@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: .
+      target: production
+    ports:
+      - "${UNDERCOVER_BIND_ADDRESS:-127.0.0.1}:${UNDERCOVER_HTTP_PORT:-8080}:8080"
+    restart: unless-stopped
+
+  dev:
+    profiles: [dev]
+    build:
+      context: .
+      target: development
+    ports:
+      - "127.0.0.1:5173:5173"
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          initial_sync: true
+          ignore:
+            - package.json
+            - package-lock.json
+            - Dockerfile
+        - action: rebuild
+          path: package.json
+        - action: rebuild
+          path: package-lock.json
+        - action: rebuild
+          path: Dockerfile

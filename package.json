@@ -5,9 +5,17 @@
   "type": "module",
   "description": "Undercover – Gián Điệp Ẩn Danh: Web game suy luận xã hội Pass & Play 100% tiếng Việt, hỗ trợ PWA offline.",
   "scripts": {
-    "dev": "npx serve . -l 5173",
-    "preview": "npx serve . -l 4173",
-    "start:win": "powershell -ExecutionPolicy Bypass -File ./scripts/dev-server.ps1"
+    "dev": "vite --host localhost",
+    "preview": "vite preview --host localhost",
+    "start:win": "powershell -ExecutionPolicy Bypass -File ./scripts/dev-server.ps1",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test"
   },
   "keywords": [
     "undercover",
@@ -17,5 +25,26 @@
     "pwa",
     "offline-game"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "i18next": "^27.2.9",
+    "preact": "^11.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
+    "@preact/preset-vite": "^2.10.6",
+    "@types/node": "^22.20.5",
+    "eslint": "^10.15.0",
+    "prettier": "^3.10.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.74.0",
+    "vite": "^8.3.8",
+    "vite-plugin-pwa": "^2.0.0",
+    "vitest": "^5.1.1",
+    "workbox-window": "^7.4.1"
+  },
+  "engines": {
+    "node": "^22.13.0 || ^24.0.0 || >=26.0.0"
+  }
 }

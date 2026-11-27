@@ -1,0 +1,16 @@
+.notice,
+.update {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  box-shadow: var(--shadow-card);
+  overflow-wrap: anywhere;
+}
+
+.update {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}

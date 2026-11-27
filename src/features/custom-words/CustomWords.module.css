@@ -1,0 +1,25 @@
+.form {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.form button {
+  margin-top: 0.5rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-block: 0.45rem;
+}
+
+.list li > button {
+  flex-shrink: 0;
+}

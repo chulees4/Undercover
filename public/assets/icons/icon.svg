@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Undercover Logo" shape-rendering="crispEdges">
+  <rect width="512" height="512" fill="#081120"/>
+  <rect x="20" y="20" width="472" height="472" fill="none" stroke="#f4f8ff" stroke-width="8"/>
+  <g>
+    <!-- Detective hat -->
+    <path d="M144 224V192H160V168H184V144H216V128H296V144H328V168H352V192H368V224Z" fill="#63a9ff"/>
+    <rect x="144" y="208" width="224" height="16" fill="#91bfff"/>
+    <path d="M96 224H416V240H400V256H112V240H96Z" fill="#63a9ff"/>
+    <!-- Glasses -->
+    <path d="M232 304H280" stroke="#f4f8ff" stroke-width="12"/>
+    <g fill="#142746" stroke="#f4f8ff" stroke-width="12">
+      <rect x="144" y="280" width="88" height="48"/>
+      <rect x="280" y="280" width="88" height="48"/>
+    </g>
+    <!-- Collar -->
+  <path d="M160 352H192V368H224V384H288V368H320V352H352V384H320V400H288V416H224V400H192V384H160Z" fill="#b5d6ff"/>
+  </g>
+</svg>

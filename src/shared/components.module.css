@@ -1,0 +1,15 @@
+.dialog {
+  color: var(--text);
+  margin: auto;
+}
+
+.dialog::backdrop {
+  background: var(--backdrop);
+}
+
+.playerButton {
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+}
